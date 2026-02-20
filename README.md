@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI In Action
+
+A Vibe Coding community website featuring 100 hands-on challenge projects across Web, Game, Mobile, and AI Agent development.
+
+**Live site:** [aiinaction.top](https://aiinaction.top)
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router, Server Components)
+- **UI:** shadcn/ui + Tailwind CSS v4 + Framer Motion
+- **Database:** PostgreSQL + Prisma ORM
+- **Auth:** NextAuth.js v5 with GitHub OAuth
+- **Deployment:** Vercel
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env .env.local
+# Edit .env.local with your database URL and GitHub OAuth credentials
+
+# Generate Prisma client
+npm run db:generate
+
+# Push schema to database
+npm run db:push
+
+# Seed the 100 challenges
+npm run db:seed
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `AUTH_SECRET` | NextAuth secret (`openssl rand -base64 32`) |
+| `GITHUB_ID` | GitHub OAuth App Client ID |
+| `GITHUB_SECRET` | GitHub OAuth App Client Secret |
+| `NEXTAUTH_URL` | Base URL (e.g., `http://localhost:3000`) |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                  # Next.js App Router pages
+│   ├── challenges/       # Challenge browse + detail
+│   ├── paths/            # Learning path pages
+│   ├── showcase/         # Community project showcase
+│   ├── profile/          # User profiles
+│   └── api/auth/         # NextAuth API routes
+├── components/
+│   ├── ui/               # shadcn/ui components
+│   └── layout/           # Header, Footer
+├── data/
+│   └── challenges.ts     # 100 challenges data
+└── lib/
+    ├── auth.ts           # NextAuth config
+    ├── prisma.ts         # Prisma client
+    └── challenges.ts     # Data access helpers
+```
