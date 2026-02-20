@@ -16,23 +16,23 @@ A Vibe Coding community website featuring 100 hands-on challenge projects across
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Set up environment variables
 cp .env .env.local
 # Edit .env.local with your database URL and GitHub OAuth credentials
 
 # Generate Prisma client
-npm run db:generate
+pnpm db:generate
 
 # Push schema to database
-npm run db:push
+pnpm db:push
 
 # Seed the 100 challenges
-npm run db:seed
+pnpm db:seed
 
 # Start development server
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
