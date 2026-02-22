@@ -3,7 +3,7 @@ export type ChallengeData = {
   title: string;
   description: string;
   difficulty: "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT";
-  category: "WEB" | "GAME" | "MOBILE" | "AI_AGENT";
+  categorySlug: string;
   tags: string[];
   objectives: string[];
   hints: string[];
@@ -61,6 +61,98 @@ export const learningPaths: PathData[] = [
   },
 ];
 
+export type CategoryData = {
+  slug: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+};
+
+export const officialCategories: CategoryData[] = [
+  {
+    slug: "web-development",
+    name: "Web Development",
+    description: "Build modern web applications from responsive portfolios to full-stack platforms.",
+    icon: "Code2",
+    color: "#3B82F6",
+    order: 1,
+  },
+  {
+    slug: "game-development",
+    name: "Game Development",
+    description: "Create browser-based games from classic arcade titles to multiplayer worlds.",
+    icon: "Gamepad2",
+    color: "#10B981",
+    order: 2,
+  },
+  {
+    slug: "mobile-development",
+    name: "Mobile App Development",
+    description: "Ship cross-platform mobile apps with React Native and Expo.",
+    icon: "Smartphone",
+    color: "#F59E0B",
+    order: 3,
+  },
+  {
+    slug: "ai-agents",
+    name: "AI Agents & Automation",
+    description: "Build intelligent AI-powered agents, from chat bots to autonomous research systems.",
+    icon: "Bot",
+    color: "#8B5CF6",
+    order: 4,
+  },
+  {
+    slug: "ai-writing",
+    name: "AI Writing & Content",
+    description: "Create AI-powered writing tools, content generators, and text transformation apps.",
+    icon: "Pen",
+    color: "#EC4899",
+    order: 5,
+  },
+  {
+    slug: "ai-image",
+    name: "AI Image & Design",
+    description: "Build image generation, editing, and computer vision applications.",
+    icon: "Image",
+    color: "#F43F5E",
+    order: 6,
+  },
+  {
+    slug: "ai-video",
+    name: "AI Video Generation",
+    description: "Create AI-powered video generation, editing, and analysis tools.",
+    icon: "Video",
+    color: "#EF4444",
+    order: 7,
+  },
+  {
+    slug: "ai-data",
+    name: "AI Data Analysis",
+    description: "Build intelligent data analysis, visualization, and insight generation tools.",
+    icon: "BarChart3",
+    color: "#06B6D4",
+    order: 8,
+  },
+  {
+    slug: "ai-audio",
+    name: "AI Audio & Speech",
+    description: "Create speech recognition, text-to-speech, music generation, and audio processing apps.",
+    icon: "AudioLines",
+    color: "#14B8A6",
+    order: 9,
+  },
+  {
+    slug: "ai-coding",
+    name: "AI-Assisted Coding",
+    description: "Build AI-powered code generation, review, debugging, and developer tools.",
+    icon: "Terminal",
+    color: "#6366F1",
+    order: 10,
+  },
+];
+
 export const challenges: ChallengeData[] = [
   // ===== WEB DEVELOPMENT (1-25) =====
   {
@@ -69,7 +161,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a responsive portfolio website with dark/light mode toggle, smooth scroll navigation, project showcase section, and contact form. Use modern CSS techniques like grid, flexbox, and animations.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["html", "css", "responsive", "portfolio"],
     objectives: [
       "Create a responsive layout with mobile-first design",
@@ -97,7 +189,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Recreate a famous SaaS landing page (like Linear, Vercel, or Stripe). Focus on pixel-perfect typography, spacing, subtle animations, and responsive behavior across all devices.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["html", "css", "animation", "clone"],
     objectives: [
       "Achieve pixel-perfect recreation of the chosen design",
@@ -125,7 +217,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a static blog that renders Markdown/MDX content with syntax highlighting, table of contents, and reading time estimates. Include category filtering and a search feature.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["markdown", "mdx", "blog", "nextjs"],
     objectives: [
       "Parse and render Markdown/MDX files as blog posts",
@@ -153,7 +245,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a weather dashboard that fetches data from a weather API. Display current conditions, 5-day forecast with charts, location search with autocomplete, and animated weather icons.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["api", "charts", "dashboard", "weather"],
     objectives: [
       "Fetch and display current weather data from an API",
@@ -181,7 +273,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an advanced todo application with categories, priority levels, drag-and-drop reordering, due dates, local storage persistence, and a beautiful UI with smooth animations.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["crud", "drag-and-drop", "local-storage", "todo"],
     objectives: [
       "Full CRUD operations for todos with categories",
@@ -209,7 +301,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a recipe search application where users can search by ingredients, filter by cuisine and dietary restrictions, save favorites, and view detailed cooking instructions.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["api", "search", "filter", "recipe"],
     objectives: [
       "Search recipes by ingredients or keywords",
@@ -237,7 +329,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a beautiful Pomodoro productivity timer with customizable work/break intervals, session tracking, stats dashboard, notification sounds, and a progress visualization.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["timer", "productivity", "animation", "stats"],
     objectives: [
       "Implement countdown timer with work/break cycles",
@@ -264,7 +356,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a scientific calculator with standard and scientific modes, calculation history, multiple themes, keyboard support, and smooth button press animations.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["calculator", "math", "keyboard", "themes"],
     objectives: [
       "Implement standard arithmetic operations",
@@ -291,7 +383,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a masonry-grid image gallery with lightbox viewing, lazy loading, infinite scroll, category filtering, and smooth animations. Support image zoom and keyboard navigation.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["gallery", "masonry", "lightbox", "lazy-loading"],
     objectives: [
       "Build a responsive masonry grid layout",
@@ -318,7 +410,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a platform where users can create quizzes with multiple question types (multiple choice, true/false, fill-in-the-blank), take quizzes with a timer, and see score analytics.",
     difficulty: "BEGINNER",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["quiz", "forms", "analytics", "education"],
     objectives: [
       "Create quiz builder with multiple question types",
@@ -343,7 +435,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a complete e-commerce storefront with product listing, search and filters, shopping cart, checkout flow with form validation, and order confirmation. Use mock payment processing.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["ecommerce", "cart", "checkout", "fullstack"],
     objectives: [
       "Display products with grid/list view toggle",
@@ -370,7 +462,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a social media feed with infinite scroll, post creation (text/images), like and comment functionality, share buttons, and user profile cards.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["social", "infinite-scroll", "feed", "fullstack"],
     objectives: [
       "Build an infinite scroll feed with virtualization",
@@ -395,7 +487,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an admin analytics dashboard with interactive charts, data tables with sorting/filtering, date range picker, export functionality, and responsive layout with sidebar navigation.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["dashboard", "charts", "tables", "analytics"],
     objectives: [
       "Create interactive charts (line, bar, pie, area)",
@@ -423,7 +515,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a full-stack URL shortener with custom short links, click analytics (geographic, device, referrer), QR code generation, and a dashboard to manage all links.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["fullstack", "api", "analytics", "url"],
     objectives: [
       "Generate short URLs with custom alias support",
@@ -448,7 +540,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Trello-like Kanban board with drag-and-drop cards between columns, card editing with rich text, labels, due dates, and board persistence.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["kanban", "drag-and-drop", "project-management", "realtime"],
     objectives: [
       "Create draggable cards between customizable columns",
@@ -475,7 +567,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a real-time chat application with WebSocket connections, chat rooms, typing indicators, read receipts, emoji reactions, and message search.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["websocket", "realtime", "chat", "fullstack"],
     objectives: [
       "Establish WebSocket connections for real-time messaging",
@@ -502,7 +594,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a drag-and-drop file uploader with progress tracking, image/video preview, file type validation, chunked uploads for large files, and a gallery view of uploaded files.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["upload", "drag-and-drop", "file", "progress"],
     objectives: [
       "Implement drag-and-drop file selection",
@@ -527,7 +619,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a complex multi-step form with conditional logic, real-time validation, progress indicator, review step, and the ability to navigate back and forth between steps.",
     difficulty: "INTERMEDIATE",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["forms", "validation", "wizard", "ux"],
     objectives: [
       "Create a multi-step form with progress indicator",
@@ -555,7 +647,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a headless CMS with a rich text editor (block-based like Notion), content types, media management, API generation, and role-based access control.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["cms", "editor", "api", "fullstack"],
     objectives: [
       "Build a block-based rich text editor",
@@ -583,7 +675,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a production-grade authentication system with OAuth providers, email/password with MFA, password reset flow, session management, and security best practices.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["auth", "security", "oauth", "mfa"],
     objectives: [
       "Implement OAuth with multiple providers (GitHub, Google)",
@@ -611,7 +703,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a real-time collaborative whiteboard where multiple users can draw, add shapes and text, with undo/redo, layers, and export to image functionality.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["canvas", "realtime", "collaboration", "drawing"],
     objectives: [
       "Implement a drawing canvas with brush tools",
@@ -638,7 +730,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a video platform with upload, transcoding pipeline, adaptive bitrate streaming (HLS), video player with custom controls, and a recommendation feed.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["video", "streaming", "hls", "fullstack"],
     objectives: [
       "Implement video upload with progress tracking",
@@ -665,7 +757,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Design and build a GraphQL API with queries, mutations, subscriptions, custom scalars, and an interactive playground with documentation and query history.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["graphql", "api", "subscriptions", "playground"],
     objectives: [
       "Design a GraphQL schema with types and relations",
@@ -693,7 +785,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a micro-frontend system with module federation, independent deployments, shared state management, and a shell application that orchestrates multiple micro-apps.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["micro-frontend", "module-federation", "architecture"],
     objectives: [
       "Set up a shell application with routing",
@@ -720,7 +812,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Take a deliberately slow web application and optimize it to achieve a perfect 100 Lighthouse score. Fix render-blocking resources, implement code splitting, optimize images, and more.",
     difficulty: "ADVANCED",
-    category: "WEB",
+    categorySlug: "web-development",
     tags: ["performance", "lighthouse", "optimization", "web-vitals"],
     objectives: [
       "Achieve 100/100 on all Lighthouse categories",
@@ -750,7 +842,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build the classic Snake game with smooth movement, power-ups (speed boost, score multiplier), increasing difficulty, a local leaderboard, and retro-styled graphics.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["canvas", "classic", "snake", "game-loop"],
     objectives: [
       "Implement a game loop with consistent frame rate",
@@ -775,7 +867,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build Tic-Tac-Toe with an unbeatable AI opponent using the minimax algorithm. Include multiple difficulty levels, move history with replay, and win/draw animations.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["ai", "minimax", "strategy", "algorithm"],
     objectives: [
       "Implement the game board with click handling",
@@ -802,7 +894,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Create a card matching memory game with flip animations, multiple difficulty levels (grid sizes), a move counter, timer, and themed card sets.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["memory", "cards", "animation", "casual"],
     objectives: [
       "Create a grid of face-down cards with flip animation",
@@ -827,7 +919,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Breakout-style brick breaker game with paddle controls, bouncing ball physics, power-ups (multi-ball, wider paddle), destructible bricks, and a level editor.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["arcade", "physics", "breakout", "canvas"],
     objectives: [
       "Implement paddle movement with mouse/keyboard",
@@ -852,7 +944,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a typing speed test with WPM calculation, accuracy tracking, real-time racing visualization against ghost opponents, difficulty modes, and a progress history chart.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["typing", "speed", "wpm", "racing"],
     objectives: [
       "Display text with real-time character highlighting",
@@ -877,7 +969,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build the 2048 puzzle game with smooth tile merging animations, swipe/keyboard controls, undo functionality, score tracking, and a best score leaderboard.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["puzzle", "2048", "animation", "swipe"],
     objectives: [
       "Implement tile sliding and merging logic",
@@ -902,7 +994,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build classic Minesweeper with auto-reveal for empty cells, flagging, custom grid sizes, a timer, and first-click safety guarantee (never hit a mine on first click).",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["classic", "puzzle", "minesweeper", "logic"],
     objectives: [
       "Generate a random minefield with adjacency numbers",
@@ -927,7 +1019,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Flappy Bird clone with canvas rendering, parallax scrolling backgrounds, pipe generation, gravity physics, score tracking, and multiple bird skins.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["arcade", "canvas", "flappy-bird", "physics"],
     objectives: [
       "Implement gravity and flap mechanics",
@@ -952,7 +1044,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Wordle clone with animated letter reveals, virtual keyboard with color feedback, share functionality (emoji grid), daily word selection, and statistics tracking.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["word", "puzzle", "wordle", "animation"],
     objectives: [
       "Implement 5-letter word guessing with 6 attempts",
@@ -977,7 +1069,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build the classic 15-puzzle sliding tile game with image support (upload your own image), move counter, auto-solve with A* algorithm, and smooth tile sliding animations.",
     difficulty: "BEGINNER",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["puzzle", "slider", "algorithm", "animation"],
     objectives: [
       "Create a sliding puzzle with numbered tiles",
@@ -1002,7 +1094,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a side-scrolling platformer with character movement, jumping physics, platform collision, enemies, collectibles, and multiple levels with a level transition system.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["platformer", "physics", "side-scroller", "levels"],
     objectives: [
       "Implement character movement with acceleration and friction",
@@ -1027,7 +1119,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a tower defense game with pathfinding enemies, placeable towers with different abilities, upgrade system, wave management, and resource economy.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["strategy", "tower-defense", "pathfinding", "waves"],
     objectives: [
       "Create a map with predefined enemy paths",
@@ -1052,7 +1144,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a turn-based card battle game with deck building, mana system, card effects (damage, heal, buff), opponent AI, and animated card play sequences.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["cards", "turn-based", "strategy", "deck-building"],
     objectives: [
       "Design a card system with different types and effects",
@@ -1077,7 +1169,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a space shooter with player ship controls, asteroids that split when hit, particle effects for explosions, a wave system, and screen wrapping.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["shooter", "space", "particles", "arcade"],
     objectives: [
       "Implement ship rotation and thrust movement",
@@ -1102,7 +1194,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a full chess implementation with all piece movement rules, special moves (castling, en passant, promotion), check/checkmate detection, and a basic AI opponent.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["chess", "ai", "strategy", "board-game"],
     objectives: [
       "Implement all chess piece movement rules",
@@ -1129,7 +1221,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a rhythm game where notes scroll toward a hit zone synced to music. Include scoring with timing accuracy, combo system, multiple tracks, and visual feedback effects.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["rhythm", "music", "timing", "audio"],
     objectives: [
       "Sync note generation with audio timestamps",
@@ -1156,7 +1248,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a procedural maze generator with multiple algorithms (DFS, Prim's, Kruskal's), visual step-by-step generation, and pathfinding solver visualization (BFS, DFS, A*).",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["maze", "algorithm", "visualization", "pathfinding"],
     objectives: [
       "Implement maze generation with multiple algorithms",
@@ -1183,7 +1275,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Tamagotchi-style virtual pet with needs (hunger, happiness, energy), animated sprite states, mini-games to earn currency, pet evolution, and real-time progression.",
     difficulty: "INTERMEDIATE",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["tamagotchi", "pet", "simulation", "animation"],
     objectives: [
       "Create a pet with needs that decay over time",
@@ -1208,7 +1300,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a real-time multiplayer game with a Node.js game server, lobby system, player matchmaking, client-side prediction, and server reconciliation.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["multiplayer", "server", "websocket", "networking"],
     objectives: [
       "Build a game server with WebSocket connections",
@@ -1235,7 +1327,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a 2D physics engine with rigid body simulation, collision detection and response, constraints/joints, gravity, and interactive object spawning.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["physics", "engine", "simulation", "canvas"],
     objectives: [
       "Implement rigid body dynamics (position, velocity, acceleration)",
@@ -1260,7 +1352,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an infinite 2D world generator with Perlin/Simplex noise for terrain, biome classification, chunk-based loading, and a minimap with explored areas.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["procedural", "terrain", "noise", "infinite"],
     objectives: [
       "Generate terrain using Perlin or Simplex noise",
@@ -1285,7 +1377,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a roguelike with procedurally generated dungeons, turn-based combat, inventory system, item drops, permadeath, and progressively harder floors.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["roguelike", "dungeon", "turn-based", "procedural"],
     objectives: [
       "Generate random dungeons with rooms and corridors",
@@ -1312,7 +1404,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a minimal 2D game engine with Entity-Component-System architecture, scene management, sprite rendering, input handling, and a simple level editor.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["engine", "ecs", "architecture", "framework"],
     objectives: [
       "Implement Entity-Component-System architecture",
@@ -1337,7 +1429,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Train an AI to play a simple game using reinforcement learning. Implement Q-learning or a neural network approach, with training visualization and performance metrics.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["ai", "reinforcement-learning", "neural-network", "training"],
     objectives: [
       "Implement a game environment with state/action/reward",
@@ -1364,7 +1456,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an interactive 3D world with Three.js featuring lighting, shadows, camera controls, 3D model loading, environment mapping, and post-processing effects.",
     difficulty: "ADVANCED",
-    category: "GAME",
+    categorySlug: "game-development",
     tags: ["3d", "threejs", "webgl", "interactive"],
     objectives: [
       "Set up a Three.js scene with camera and renderer",
@@ -1394,7 +1486,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a mobile expense tracking app with category-based spending, pie/bar charts, monthly budgets, recurring expenses, and export to CSV functionality.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["finance", "charts", "react-native", "expo"],
     objectives: [
       "Create expense entry with amount, category, and date",
@@ -1421,7 +1513,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a daily habit tracking app with streak counting, reminder notifications, progress charts, weekly/monthly views, and motivational milestones.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["habits", "streaks", "notifications", "progress"],
     objectives: [
       "Create and manage daily habits with icons and colors",
@@ -1446,7 +1538,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a spaced repetition flashcard app with swipe gestures (know/don't know), deck management, progress tracking, and the SM-2 algorithm for optimal review scheduling.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["education", "spaced-repetition", "swipe", "flashcards"],
     objectives: [
       "Create flashcard decks with front/back content",
@@ -1471,7 +1563,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a notes app with rich text editing, folder organization, full-text search, pinned notes, tags, and cloud sync capabilities.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["notes", "editor", "search", "organization"],
     objectives: [
       "Implement rich text editing with formatting toolbar",
@@ -1496,7 +1588,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an app to manage multiple countdown timers for events (birthdays, holidays, deadlines) with custom backgrounds, sharing, and home screen widgets.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["timer", "countdown", "events", "widgets"],
     objectives: [
       "Create countdown timers with target date and name",
@@ -1521,7 +1613,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a QR code scanner and generator app with camera integration, scan history, custom QR generation (URL, text, WiFi, vCard), and batch scanning.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["qr-code", "camera", "scanner", "generator"],
     objectives: [
       "Scan QR codes using the device camera",
@@ -1546,7 +1638,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a beautiful music player interface with album art display, playback controls, progress scrubbing, playlist management, and gesture-based interactions.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["music", "player", "ui", "gestures"],
     objectives: [
       "Create a now-playing screen with album art",
@@ -1571,7 +1663,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a photo editing app with camera capture, preset filters (vintage, noir, warm), brightness/contrast/saturation sliders, and save/share functionality.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["photo", "filter", "camera", "image-processing"],
     objectives: [
       "Capture photos from camera or select from gallery",
@@ -1596,7 +1688,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a daily mood tracking journal with mood selection (emoji-based), notes, calendar view, mood trends over time, and insights like most productive days.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["journal", "mood", "calendar", "insights"],
     objectives: [
       "Create daily mood entries with emoji selection",
@@ -1621,7 +1713,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a comprehensive unit converter app supporting length, weight, temperature, currency (live rates), speed, and more. Include favorites and conversion history.",
     difficulty: "BEGINNER",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["converter", "units", "currency", "utility"],
     objectives: [
       "Support 10+ unit categories with conversions",
@@ -1646,7 +1738,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a complete food delivery app UI with restaurant browsing, menu viewing, cart management, order tracking with map, and smooth animations throughout.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["food", "delivery", "ui", "animations"],
     objectives: [
       "Create restaurant listing with search and filters",
@@ -1671,7 +1763,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a fitness app with an exercise library, custom workout builder, workout timer with rest intervals, progress tracking, and body measurement logging.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["fitness", "workout", "timer", "health"],
     objectives: [
       "Create an exercise library with instructions and images",
@@ -1696,7 +1788,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an offline-capable todo app that works without internet and syncs when connectivity is restored. Handle conflict resolution for concurrent edits.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["offline-first", "sync", "conflict-resolution", "local"],
     objectives: [
       "Full CRUD todo functionality that works offline",
@@ -1721,7 +1813,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an interactive map app with custom markers, route planning, location search with geocoding, offline map tiles, and points of interest clustering.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["maps", "navigation", "geocoding", "location"],
     objectives: [
       "Display an interactive map with zoom and pan",
@@ -1746,7 +1838,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Implement a complete push notification system with rich notifications (images, actions), notification categories, scheduling, deep linking, and preference management.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["notifications", "push", "deep-linking", "scheduling"],
     objectives: [
       "Set up push notification registration and permissions",
@@ -1771,7 +1863,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Implement biometric authentication with Face ID and fingerprint support, fallback PIN, secure token storage, and auto-lock with configurable timeout.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["biometrics", "auth", "security", "face-id"],
     objectives: [
       "Detect available biometric capabilities",
@@ -1796,7 +1888,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an Instagram-like stories feature with timed slide progression, tap/swipe navigation, progress indicators, image/video support, and story creation.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["stories", "social", "gestures", "media"],
     objectives: [
       "Display stories with timed auto-progression",
@@ -1821,7 +1913,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an augmented reality business card viewer that detects a physical card via camera and overlays interactive 3D content, links, and contact information.",
     difficulty: "INTERMEDIATE",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["ar", "augmented-reality", "3d", "camera"],
     objectives: [
       "Detect a card pattern using device camera",
@@ -1846,7 +1938,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a chat app that works seamlessly offline, queuing messages for delivery when online. Handle message ordering, conflict resolution, and sync indicators.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["chat", "offline", "sync", "messaging"],
     objectives: [
       "Full chat functionality that works without internet",
@@ -1871,7 +1963,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a mobile video editor with trimming, merging clips, adding text overlays and music tracks, applying filters, and exporting the final video.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["video", "editor", "media", "export"],
     objectives: [
       "Trim video clips with frame-accurate scrubbing",
@@ -1896,7 +1988,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a health dashboard that integrates with device health APIs (steps, heart rate, sleep) and displays comprehensive charts, goals, and trend analysis.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["health", "fitness", "dashboard", "device-api"],
     objectives: [
       "Read step count and activity data from HealthKit/Google Fit",
@@ -1921,7 +2013,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a single app that runs on iOS, Android, and Web from one codebase. Handle platform-specific UI patterns, navigation, and responsive layouts.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["cross-platform", "web", "ios", "android"],
     objectives: [
       "Create a shared codebase for iOS, Android, and Web",
@@ -1948,7 +2040,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a reusable animation primitives library with spring physics, gesture-driven animations, layout transitions, shared element transitions, and configurable presets.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["animation", "library", "gestures", "physics"],
     objectives: [
       "Implement spring and timing animation primitives",
@@ -1975,7 +2067,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a full App Store browsing experience with featured apps, categories, search, app detail pages with screenshots, ratings, reviews, and deep linking.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["app-store", "ui", "deep-linking", "complex-ui"],
     objectives: [
       "Create a featured apps carousel with parallax",
@@ -2000,7 +2092,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Integrate payment processing with Stripe and in-app purchases. Build subscription management, payment history, receipt validation, and refund handling.",
     difficulty: "ADVANCED",
-    category: "MOBILE",
+    categorySlug: "mobile-development",
     tags: ["payments", "stripe", "subscriptions", "in-app-purchase"],
     objectives: [
       "Integrate Stripe for card payments",
@@ -2029,7 +2121,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a beautiful chat UI for AI conversations with streaming response display, message history, conversation management, code block rendering, and markdown support.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["chat", "streaming", "ui", "llm"],
     objectives: [
       "Create a chat UI with user and AI message bubbles",
@@ -2056,7 +2148,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a tool for creating, testing, and sharing prompt templates with variable placeholders, version history, A/B testing results, and a community template library.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["prompts", "templates", "testing", "sharing"],
     objectives: [
       "Create prompt templates with {{variable}} placeholders",
@@ -2081,7 +2173,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a text editor with AI-powered writing assistance: grammar checking, tone adjustment, text expansion/compression, and inline suggestions like GitHub Copilot.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["writing", "editor", "suggestions", "grammar"],
     objectives: [
       "Build a rich text editor with formatting tools",
@@ -2108,7 +2200,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a frontend interface for AI image generation with prompt input, style presets, aspect ratio selection, generation history gallery, and image variations.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["image-generation", "ui", "gallery", "ai-art"],
     objectives: [
       "Create a prompt input with style preset buttons",
@@ -2135,7 +2227,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a tool where users paste code and receive AI-powered reviews with bug detection, security vulnerability scanning, performance suggestions, and refactoring recommendations.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["code-review", "analysis", "security", "refactoring"],
     objectives: [
       "Accept code input with language detection",
@@ -2160,7 +2252,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a sentiment analysis tool that analyzes text, social media posts, or product reviews. Display results with confidence scores, emotion breakdown, and trend charts.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["sentiment", "analysis", "visualization", "nlp"],
     objectives: [
       "Analyze text sentiment (positive, negative, neutral)",
@@ -2185,7 +2277,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a tool that summarizes articles, PDFs, and YouTube videos. Support multiple summary lengths, key points extraction, and summary comparison.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["summarizer", "pdf", "youtube", "extraction"],
     objectives: [
       "Summarize article text from URLs",
@@ -2210,7 +2302,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a no-code chatbot creator where users define personality, knowledge base, conversation flows, and deploy the bot with an embeddable widget.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["chatbot", "no-code", "builder", "embed"],
     objectives: [
       "Create chatbot with name, personality, and system prompt",
@@ -2235,7 +2327,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a multi-language translator with context-aware translations, tone preservation, idiom handling, translation memory, and side-by-side comparison.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["translation", "multilingual", "context", "comparison"],
     objectives: [
       "Translate text between 20+ languages",
@@ -2260,7 +2352,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a voice recording app that transcribes speech to text using AI, then formats and organizes the transcription with automatic tagging, headings, and action item extraction.",
     difficulty: "BEGINNER",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["voice", "transcription", "speech", "notes"],
     objectives: [
       "Record audio with pause and resume",
@@ -2287,7 +2379,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a Retrieval-Augmented Generation system. Upload documents, chunk and embed them into a vector store, and query with natural language to get AI answers grounded in your data.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["rag", "vector-store", "embeddings", "knowledge-base"],
     objectives: [
       "Upload and process PDF, DOCX, and text documents",
@@ -2312,7 +2404,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an AI agent that can use tools: web search, code execution, file reading, API calls. Implement the ReAct pattern with thought/action/observation loops.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["agent", "tools", "react-pattern", "function-calling"],
     objectives: [
       "Implement the ReAct (Reason + Act) agent loop",
@@ -2339,7 +2431,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a system where two AI agents debate a given topic from opposing perspectives. Users act as judge, scoring arguments. Includes structured rounds and rebuttals.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["multi-agent", "debate", "reasoning", "perspectives"],
     objectives: [
       "Create two AI agents with opposing viewpoints",
@@ -2364,7 +2456,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a visual node-based editor for creating AI processing pipelines. Connect LLM calls, data transformations, conditional logic, and output nodes in a drag-and-drop canvas.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["workflow", "node-editor", "pipeline", "visual"],
     objectives: [
       "Create a drag-and-drop node canvas",
@@ -2391,7 +2483,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an agent that takes natural language feature descriptions and generates working code. Include file structure planning, iterative refinement, and a preview sandbox.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["code-generation", "agent", "sandbox", "natural-language"],
     objectives: [
       "Accept natural language feature descriptions",
@@ -2418,7 +2510,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a tool where users upload CSV data, ask natural language questions, and get AI-generated charts, insights, and statistical analysis with explanations.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["data-analysis", "csv", "charts", "natural-language"],
     objectives: [
       "Upload and parse CSV/Excel files",
@@ -2443,7 +2535,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a search engine with conversational follow-up questions. Maintain context across queries, show source citations, and support refinement through natural dialogue.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["search", "conversational", "context", "citations"],
     objectives: [
       "Implement web search with result summarization",
@@ -2468,7 +2560,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an AI email assistant that drafts replies, composes new emails with tone control, summarizes email threads, and suggests quick responses.",
     difficulty: "INTERMEDIATE",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["email", "assistant", "drafting", "tone"],
     objectives: [
       "Draft email replies based on received email context",
@@ -2493,7 +2585,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an agent that autonomously researches topics by searching the web, reading articles, synthesizing information, and producing structured research reports with citations.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["research", "autonomous", "web-scraping", "report"],
     objectives: [
       "Accept a research topic with scope parameters",
@@ -2518,7 +2610,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a VS Code extension-like AI coding assistant with inline completions, chat sidebar, code explanation, bug detection, and context-aware suggestions.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["pair-programming", "ide", "completions", "extension"],
     objectives: [
       "Create a code editor with AI inline completions",
@@ -2545,7 +2637,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build an app that processes multiple input types: text, images, audio, and documents. Perform cross-modal tasks like describing images, transcribing audio, and answering questions about documents.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["multi-modal", "vision", "audio", "documents"],
     objectives: [
       "Accept text, image, audio, and document inputs",
@@ -2572,7 +2664,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Orchestrate multiple specialized AI agents that collaborate on complex tasks. Build a coordinator that decomposes tasks, assigns them to specialists, and synthesizes results.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["swarm", "multi-agent", "orchestration", "collaboration"],
     objectives: [
       "Create specialized agents (researcher, writer, coder, reviewer)",
@@ -2597,7 +2689,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a UI for the complete model fine-tuning workflow: dataset preparation with labeling, training configuration, job monitoring, and evaluation with test prompts.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["fine-tuning", "training", "dataset", "evaluation"],
     objectives: [
       "Upload and format training datasets (JSONL)",
@@ -2624,7 +2716,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a platform for sharing and deploying custom AI agents. Users can publish agents with descriptions, try others' agents, rate them, and deploy via API or embed.",
     difficulty: "ADVANCED",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["marketplace", "agents", "deploy", "sharing"],
     objectives: [
       "Create a marketplace listing for AI agents",
@@ -2649,7 +2741,7 @@ export const challenges: ChallengeData[] = [
     description:
       "Build a complete AI-powered SaaS product with user auth, subscription billing, AI core functionality, usage tracking, admin dashboard, and landing page.",
     difficulty: "EXPERT",
-    category: "AI_AGENT",
+    categorySlug: "ai-agents",
     tags: ["saas", "fullstack", "billing", "production"],
     objectives: [
       "Build a complete landing page with pricing tiers",

@@ -1,7 +1,11 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { learningPaths, challenges } from "../src/data/challenges";
+import {
+  learningPaths,
+  challenges,
+  officialCategories,
+} from "../src/data/challenges";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -12,6 +16,32 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("Seeding database...");
 
+  // 1. Upsert official categories
+  for (const cat of officialCategories) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: {
+        name: cat.name,
+        description: cat.description,
+        icon: cat.icon,
+        color: cat.color,
+        order: cat.order,
+        isOfficial: true,
+      },
+      create: {
+        slug: cat.slug,
+        name: cat.name,
+        description: cat.description,
+        icon: cat.icon,
+        color: cat.color,
+        order: cat.order,
+        isOfficial: true,
+      },
+    });
+  }
+  console.log(`  Seeded ${officialCategories.length} categories.`);
+
+  // 2. Upsert learning paths
   for (const path of learningPaths) {
     await prisma.learningPath.upsert({
       where: { slug: path.slug },
@@ -34,27 +64,35 @@ async function main() {
     console.log(`  Path: ${path.title}`);
   }
 
+  // Build lookup maps
+  const categoryMap = new Map<string, string>();
+  for (const c of await prisma.category.findMany()) {
+    categoryMap.set(c.slug, c.id);
+  }
+
   const pathMap = new Map<string, string>();
-  const allPaths = await prisma.learningPath.findMany();
-  for (const p of allPaths) {
+  for (const p of await prisma.learningPath.findMany()) {
     pathMap.set(p.slug, p.id);
   }
 
+  // 3. Upsert challenges + tags
   for (const challenge of challenges) {
     const pathId = pathMap.get(challenge.pathSlug) ?? null;
-    await prisma.challenge.upsert({
+    const categoryId = categoryMap.get(challenge.categorySlug) ?? null;
+
+    const upserted = await prisma.challenge.upsert({
       where: { slug: challenge.slug },
       update: {
         title: challenge.title,
         description: challenge.description,
         difficulty: challenge.difficulty,
-        category: challenge.category,
-        tags: challenge.tags,
         objectives: challenge.objectives,
         hints: challenge.hints,
         resources: challenge.resources,
         estimatedTime: challenge.estimatedTime,
         order: challenge.order,
+        isOfficial: true,
+        categoryId,
         pathId,
       },
       create: {
@@ -62,16 +100,34 @@ async function main() {
         title: challenge.title,
         description: challenge.description,
         difficulty: challenge.difficulty,
-        category: challenge.category,
-        tags: challenge.tags,
         objectives: challenge.objectives,
         hints: challenge.hints,
         resources: challenge.resources,
         estimatedTime: challenge.estimatedTime,
         order: challenge.order,
+        isOfficial: true,
+        authorId: null,
+        categoryId,
         pathId,
       },
     });
+
+    // Sync tags: delete existing, re-create
+    await prisma.challengeTag.deleteMany({
+      where: { challengeId: upserted.id },
+    });
+
+    for (const tagName of challenge.tags) {
+      const normalized = tagName.toLowerCase().trim();
+      const tag = await prisma.tag.upsert({
+        where: { name: normalized },
+        update: {},
+        create: { name: normalized },
+      });
+      await prisma.challengeTag.create({
+        data: { challengeId: upserted.id, tagId: tag.id },
+      });
+    }
   }
 
   console.log(`  Seeded ${challenges.length} challenges.`);
