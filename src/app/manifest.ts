@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "AI In Action",
     short_name: "AIInAction",
-    description: "Learn Vibe Coding by building real projects",
+    description: "Learn AI by building real projects",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0f",

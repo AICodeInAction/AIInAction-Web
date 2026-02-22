@@ -39,7 +39,7 @@ export function Footer() {
               <span className="font-bold tracking-tight">AI In Action</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              Learn Vibe Coding by building real projects. From beginner to
+              Learn AI by building real projects. From beginner to
               expert, one challenge at a time.
             </p>
           </div>

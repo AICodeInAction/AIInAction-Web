@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Github, Moon, Sun, Zap } from "lucide-react";
+import { Menu, X, Github, Moon, Sun, Zap, Plus } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -68,6 +68,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {session?.user && (
+            <Button variant="outline" size="sm" className="hidden gap-1.5 md:flex" asChild>
+              <Link href="/challenges/new">
+                <Plus className="h-3.5 w-3.5" />
+                Create
+              </Link>
+            </Button>
+          )}
+
           <Button
             variant="ghost"
             size="icon"

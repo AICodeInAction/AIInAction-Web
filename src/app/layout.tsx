@@ -19,25 +19,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "AI In Action - Learn Vibe Coding by Building",
+    default: "AI In Action - Learn AI by Building",
     template: "%s | AI In Action",
   },
   description:
-    "Master Vibe Coding through 100 hands-on challenge projects. Build real web apps, games, mobile apps, and AI agents.",
+    "Master AI through hands-on challenge projects. Build real web apps, games, mobile apps, and AI tools.",
   metadataBase: new URL("https://aiinaction.top"),
   openGraph: {
-    title: "AI In Action - Learn Vibe Coding by Building",
+    title: "AI In Action - Learn AI by Building",
     description:
-      "Master Vibe Coding through 100 hands-on challenge projects.",
+      "Master AI through hands-on challenge projects. Build real web apps, games, mobile apps, and AI tools.",
     url: "https://aiinaction.top",
     siteName: "AI In Action",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI In Action - Learn Vibe Coding by Building",
+    title: "AI In Action - Learn AI by Building",
     description:
-      "Master Vibe Coding through 100 hands-on challenge projects.",
+      "Master AI through hands-on challenge projects. Build real web apps, games, mobile apps, and AI tools.",
   },
 };
 
