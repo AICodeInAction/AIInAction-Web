@@ -30,17 +30,19 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-110">
+        {/* Logo */}
+        <Link href="/" className="group flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_12px_oklch(0.78_0.145_195/0.3)] transition-all group-hover:scale-110 group-hover:shadow-[0_0_20px_oklch(0.78_0.145_195/0.5)]">
             <Zap className="h-4.5 w-4.5" />
           </div>
-          <span className="text-lg font-bold tracking-tight">
+          <span className="font-display text-lg font-bold tracking-tight">
             AI In Action
           </span>
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
             const isActive = pathname.startsWith(link.href);
@@ -50,26 +52,28 @@ export function Header() {
                 href={link.href}
                 className={`relative rounded-md px-3.5 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-foreground"
+                    ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {link.label}
                 {isActive && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute inset-x-1 -bottom-[1.125rem] h-px bg-foreground"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                  />
+                  <div className="absolute inset-x-1 -bottom-[1.125rem] h-px bg-primary shadow-[0_0_8px_oklch(0.78_0.145_195/0.5)]" />
                 )}
               </Link>
             );
           })}
         </nav>
 
+        {/* Right side actions */}
         <div className="flex items-center gap-2">
           {session?.user && (
-            <Button variant="outline" size="sm" className="hidden gap-1.5 md:flex" asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden gap-1.5 border-primary/25 hover:border-primary/50 hover:bg-primary/5 md:flex"
+              asChild
+            >
               <Link href="/challenges/new">
                 <Plus className="h-3.5 w-3.5" />
                 Create
@@ -141,6 +145,7 @@ export function Header() {
         </div>
       </div>
 
+      {/* Mobile nav */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -148,7 +153,7 @@ export function Header() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-border/40 md:hidden"
+            className="overflow-hidden border-t border-border md:hidden"
           >
             <nav className="flex flex-col gap-1 p-4">
               {navLinks.map((link) => (
@@ -158,7 +163,7 @@ export function Header() {
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                     pathname.startsWith(link.href)
-                      ? "bg-accent text-foreground"
+                      ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
