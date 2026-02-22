@@ -44,6 +44,7 @@ export default async function ChallengesPage({ searchParams }: Props) {
         search: params.search || "",
         tab: params.tab || "all",
       }}
+      currentPage={params.page ? parseInt(params.page) : 1}
     />
   );
 }

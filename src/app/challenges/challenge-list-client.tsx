@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Search, Plus, Shield } from "lucide-react";
+import { Search, Plus, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -73,20 +73,25 @@ const fadeUp = {
   },
 };
 
+const PAGE_SIZE = 30;
+
 export function ChallengeListClient({
   challenges,
   categories,
   total,
   currentFilters,
+  currentPage,
 }: {
   challenges: SerializedChallenge[];
   categories: SerializedCategory[];
   total: number;
   currentFilters: Filters;
+  currentPage: number;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   const updateFilter = useCallback(
     (key: string, value: string) => {
@@ -97,6 +102,19 @@ export function ChallengeListClient({
         params.set(key, value);
       }
       params.delete("page");
+      router.push(`/challenges?${params.toString()}`);
+    },
+    [router, searchParams]
+  );
+
+  const goToPage = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (page <= 1) {
+        params.delete("page");
+      } else {
+        params.set("page", String(page));
+      }
       router.push(`/challenges?${params.toString()}`);
     },
     [router, searchParams]
@@ -209,12 +227,12 @@ export function ChallengeListClient({
 
       {/* Results count */}
       <div className="mt-6 text-sm text-muted-foreground">
-        Showing {challenges.length} of {total} challenges
+        Showing {(currentPage - 1) * PAGE_SIZE + 1}-{Math.min(currentPage * PAGE_SIZE, total)} of {total} challenges
       </div>
 
       {/* Challenge grid */}
       <motion.div
-        key={`${currentFilters.category}-${currentFilters.difficulty}-${currentFilters.tab}-${currentFilters.search}`}
+        key={`${currentFilters.category}-${currentFilters.difficulty}-${currentFilters.tab}-${currentFilters.search}-${currentPage}`}
         initial="hidden"
         animate="visible"
         variants={stagger}
@@ -233,8 +251,65 @@ export function ChallengeListClient({
           </p>
         </div>
       )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-10 flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="gap-1"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Prev
+          </Button>
+          <div className="flex items-center gap-1">
+            {generatePageNumbers(currentPage, totalPages).map((p, i) =>
+              p === "..." ? (
+                <span key={`dot-${i}`} className="px-2 text-sm text-muted-foreground">
+                  ...
+                </span>
+              ) : (
+                <Button
+                  key={p}
+                  variant={currentPage === p ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => goToPage(p as number)}
+                  className="min-w-9"
+                >
+                  {p}
+                </Button>
+              )
+            )}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className="gap-1"
+          >
+            Next
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
     </div>
   );
+}
+
+function generatePageNumbers(current: number, total: number): (number | "...")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "...")[] = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) pages.push("...");
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < total - 1) pages.push("...");
+  pages.push(total);
+  return pages;
 }
 
 function ChallengeCard({ challenge }: { challenge: SerializedChallenge }) {
