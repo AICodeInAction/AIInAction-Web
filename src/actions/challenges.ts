@@ -60,7 +60,7 @@ export async function createChallenge(formData: FormData) {
       slug,
       title,
       description,
-      difficulty: difficulty as any,
+      difficulty: difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT",
       categoryId: categoryId || null,
       authorId: session.user.id,
       isOfficial: false,
@@ -103,7 +103,7 @@ export async function updateChallenge(challengeId: string, formData: FormData) {
     data: {
       title,
       description,
-      difficulty: difficulty as any,
+      difficulty: difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT",
       categoryId: categoryId || null,
       objectives: objectives.filter(Boolean),
       hints: hints.filter(Boolean),
