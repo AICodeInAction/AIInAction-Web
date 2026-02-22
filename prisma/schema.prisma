@@ -49,10 +49,13 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts    Account[]
-  sessions    Session[]
-  completions ChallengeCompletion[]
-  projects    SharedProject[]
+  accounts           Account[]
+  sessions           Session[]
+  completions        ChallengeCompletion[]
+  projects           SharedProject[]
+  authoredChallenges Challenge[]        @relation("AuthoredChallenges")
+  challengeLikes     ChallengeLike[]
+  challengeComments  ChallengeComment[]
 
   @@map("users")
 }
@@ -64,6 +67,39 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+model Category {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  name        String
+  description String?     @db.Text
+  icon        String?
+  color       String?
+  order       Int         @default(0)
+  isOfficial  Boolean     @default(false) @map("is_official")
+  challenges  Challenge[]
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  @@map("categories")
+}
+
+model Tag {
+  id         String         @id @default(cuid())
+  name       String         @unique
+  challenges ChallengeTag[]
+
+  @@map("tags")
+}
+
+model ChallengeTag {
+  challengeId String    @map("challenge_id")
+  tagId       String    @map("tag_id")
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([challengeId, tagId])
+  @@map("challenge_tags")
 }
 
 model LearningPath {
@@ -86,20 +122,34 @@ model Challenge {
   title         String
   description   String     @db.Text
   difficulty    Difficulty
-  category      Category
-  tags          String[]
   objectives    String[]
   hints         String[]
   resources     String[]
-  estimatedTime String     @map("estimated_time")
-  order         Int
+  estimatedTime String?    @map("estimated_time")
+  order         Int        @default(0)
+
+  isOfficial    Boolean    @default(false) @map("is_official")
+  authorId      String?    @map("author_id")
+  author        User?      @relation("AuthoredChallenges", fields: [authorId], references: [id])
+  forkedFromId  String?    @map("forked_from_id")
+  forkedFrom    Challenge? @relation("Forks", fields: [forkedFromId], references: [id])
+  forks         Challenge[] @relation("Forks")
+  likesCount    Int        @default(0) @map("likes_count")
+
+  categoryId    String?    @map("category_id")
+  category      Category?  @relation(fields: [categoryId], references: [id])
+
   pathId        String?    @map("path_id")
   path          LearningPath? @relation(fields: [pathId], references: [id])
 
-  completions ChallengeCompletion[]
-  projects    SharedProject[]
+  tags          ChallengeTag[]
+  completions   ChallengeCompletion[]
+  projects      SharedProject[]
+  likes         ChallengeLike[]
+  comments      ChallengeComment[]
 
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
 
   @@map("challenges")
 }
@@ -139,18 +189,35 @@ model SharedProject {
   @@map("shared_projects")
 }
 
+model ChallengeLike {
+  userId      String   @map("user_id")
+  challengeId String   @map("challenge_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@id([userId, challengeId])
+  @@map("challenge_likes")
+}
+
+model ChallengeComment {
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+  userId      String   @map("user_id")
+  challengeId String   @map("challenge_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("challenge_comments")
+}
+
 enum Difficulty {
   BEGINNER
   INTERMEDIATE
   ADVANCED
   EXPERT
-}
-
-enum Category {
-  WEB
-  GAME
-  MOBILE
-  AI_AGENT
 }
 
 enum CompletionStatus {
