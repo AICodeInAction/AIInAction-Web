@@ -12,11 +12,25 @@ import {
   Bot,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  getGlobalChallengeNumber,
-  difficultyConfig,
-} from "@/lib/challenges";
-import type { ChallengeData, PathData } from "@/data/challenges";
+import { difficultyConfig } from "@/lib/constants";
+
+type PathData = {
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+};
+
+type ChallengeData = {
+  slug: string;
+  title: string;
+  description: string;
+  difficulty: keyof typeof difficultyConfig;
+  estimatedTime: string | null;
+  order: number;
+};
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Code2,
@@ -121,34 +135,33 @@ export function PathDetail({
                   variants={stagger}
                   className="mt-4 space-y-2"
                 >
-                  {items.map((challenge) => {
-                    const num = getGlobalChallengeNumber(challenge);
-                    return (
-                      <motion.div key={challenge.slug} variants={fadeUp}>
-                        <Link
-                          href={`/challenges/${challenge.slug}`}
-                          className="group flex items-center gap-4 rounded-lg border border-border/40 bg-card/30 px-4 py-3.5 transition-all hover:border-border hover:bg-card hover:shadow-sm"
-                        >
-                          <span className="w-10 shrink-0 font-mono text-xs text-muted-foreground">
-                            #{String(num).padStart(3, "0")}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-sm group-hover:text-primary transition-colors truncate">
-                              {challenge.title}
-                            </h3>
-                            <p className="mt-0.5 text-xs text-muted-foreground truncate">
-                              {challenge.description}
-                            </p>
-                          </div>
+                  {items.map((challenge) => (
+                    <motion.div key={challenge.slug} variants={fadeUp}>
+                      <Link
+                        href={`/challenges/${challenge.slug}`}
+                        className="group flex items-center gap-4 rounded-lg border border-border/40 bg-card/30 px-4 py-3.5 transition-all hover:border-border hover:bg-card hover:shadow-sm"
+                      >
+                        <span className="w-10 shrink-0 font-mono text-xs text-muted-foreground">
+                          #{String(challenge.order).padStart(2, "0")}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-sm group-hover:text-primary transition-colors truncate">
+                            {challenge.title}
+                          </h3>
+                          <p className="mt-0.5 text-xs text-muted-foreground truncate">
+                            {challenge.description}
+                          </p>
+                        </div>
+                        {challenge.estimatedTime && (
                           <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
                             <Clock className="h-3.5 w-3.5" />
                             {challenge.estimatedTime}
                           </div>
-                          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
+                        )}
+                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                      </Link>
+                    </motion.div>
+                  ))}
                 </motion.div>
               </section>
             );

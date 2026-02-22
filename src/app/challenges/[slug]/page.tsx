@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   ArrowLeft,
@@ -10,6 +11,9 @@ import {
   ExternalLink,
   CheckCircle2,
   ChevronRight,
+  Shield,
+  GitFork,
+  MessageCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,11 +21,13 @@ import { Separator } from "@/components/ui/separator";
 import {
   getChallengeBySlug,
   getChallengesByPath,
-  getGlobalChallengeNumber,
+  getChallengeComments,
   difficultyConfig,
-  categoryConfig,
+  hasUserLiked,
 } from "@/lib/challenges";
+import { auth } from "@/lib/auth";
 import { ChallengeActions } from "./challenge-actions";
+import { CommentSection } from "./comment-section";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -29,7 +35,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const challenge = getChallengeBySlug(slug);
+  const challenge = await getChallengeBySlug(slug);
   if (!challenge) return { title: "Challenge Not Found" };
   return {
     title: challenge.title,
@@ -39,20 +45,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ChallengeDetailPage({ params }: Props) {
   const { slug } = await params;
-  const challenge = getChallengeBySlug(slug);
+  const challenge = await getChallengeBySlug(slug);
   if (!challenge) notFound();
 
-  const num = getGlobalChallengeNumber(challenge);
   const diff = difficultyConfig[challenge.difficulty];
-  const cat = categoryConfig[challenge.category];
 
-  const pathChallenges = getChallengesByPath(challenge.pathSlug);
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const [pathChallenges, { comments, total: commentTotal }, liked] =
+    await Promise.all([
+      challenge.path ? getChallengesByPath(challenge.path.slug) : Promise.resolve([]),
+      getChallengeComments(challenge.id),
+      userId ? hasUserLiked(userId, challenge.id) : Promise.resolve(false),
+    ]);
+
   const currentIndex = pathChallenges.findIndex((c) => c.slug === slug);
-  const prevChallenge = currentIndex > 0 ? pathChallenges[currentIndex - 1] : null;
+  const prevChallenge =
+    currentIndex > 0 ? pathChallenges[currentIndex - 1] : null;
   const nextChallenge =
     currentIndex < pathChallenges.length - 1
       ? pathChallenges[currentIndex + 1]
       : null;
+
+  const isAuthor = userId === challenge.authorId;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
@@ -72,36 +88,98 @@ export default async function ChallengeDetailPage({ params }: Props) {
       {/* Header */}
       <div className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="font-mono text-sm text-muted-foreground">
-            #{String(num).padStart(3, "0")}
-          </span>
+          {challenge.isOfficial ? (
+            <Badge variant="secondary" className="gap-1">
+              <Shield className="h-3 w-3" />
+              Official
+            </Badge>
+          ) : challenge.author ? (
+            <div className="flex items-center gap-2">
+              {challenge.author.image && (
+                <Image
+                  src={challenge.author.image}
+                  alt={challenge.author.name || ""}
+                  width={20}
+                  height={20}
+                  className="rounded-full"
+                />
+              )}
+              <span className="text-sm text-muted-foreground">
+                by{" "}
+                <Link
+                  href={`/profile/${challenge.author.id}`}
+                  className="text-foreground hover:underline"
+                >
+                  {challenge.author.name}
+                </Link>
+              </span>
+            </div>
+          ) : null}
           <Badge variant="outline" className={diff.className}>
             {diff.label}
           </Badge>
-          <Badge variant="secondary">{cat.label}</Badge>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Clock className="h-3.5 w-3.5" />
-            {challenge.estimatedTime}
-          </div>
+          {challenge.category && (
+            <Badge variant="secondary">{challenge.category.name}</Badge>
+          )}
+          {challenge.estimatedTime && (
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              {challenge.estimatedTime}
+            </div>
+          )}
         </div>
+
+        {/* Forked from */}
+        {challenge.forkedFrom && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            <GitFork className="inline h-3.5 w-3.5 mr-1" />
+            Forked from{" "}
+            <Link
+              href={`/challenges/${challenge.forkedFrom.slug}`}
+              className="text-primary hover:underline"
+            >
+              {challenge.forkedFrom.title}
+            </Link>
+          </p>
+        )}
+
         <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           {challenge.title}
         </h1>
         <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
           {challenge.description}
         </p>
+
+        {/* Stats */}
+        <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+          <span>{challenge.likesCount} likes</span>
+          <span className="flex items-center gap-1">
+            <GitFork className="h-3.5 w-3.5" />
+            {challenge._count.forks} forks
+          </span>
+          <span className="flex items-center gap-1">
+            <MessageCircle className="h-3.5 w-3.5" />
+            {challenge._count.comments} comments
+          </span>
+        </div>
       </div>
 
       {/* Tags */}
       <div className="mt-6 flex flex-wrap gap-2">
-        {challenge.tags.map((tag) => (
-          <Badge key={tag} variant="outline" className="text-xs">
-            {tag}
+        {challenge.tags.map((ct) => (
+          <Badge key={ct.tag.name} variant="outline" className="text-xs">
+            {ct.tag.name}
           </Badge>
         ))}
       </div>
 
-      <ChallengeActions slug={challenge.slug} />
+      <ChallengeActions
+        challengeId={challenge.id}
+        slug={challenge.slug}
+        likesCount={challenge.likesCount}
+        liked={liked}
+        isAuthor={isAuthor}
+      />
 
       <Separator className="my-8" />
 
@@ -172,30 +250,43 @@ export default async function ChallengeDetailPage({ params }: Props) {
         </>
       )}
 
-      {/* Navigation */}
+      {/* Comments */}
       <Separator className="my-8" />
-      <div className="flex items-center justify-between">
-        {prevChallenge ? (
-          <Link href={`/challenges/${prevChallenge.slug}`}>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              {prevChallenge.title}
-            </Button>
-          </Link>
-        ) : (
-          <div />
-        )}
-        {nextChallenge ? (
-          <Link href={`/challenges/${nextChallenge.slug}`}>
-            <Button variant="ghost" size="sm" className="gap-2">
-              {nextChallenge.title}
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        ) : (
-          <div />
-        )}
-      </div>
+      <CommentSection
+        challengeId={challenge.id}
+        comments={JSON.parse(JSON.stringify(comments))}
+        totalComments={commentTotal}
+        currentUserId={userId || null}
+      />
+
+      {/* Navigation */}
+      {pathChallenges.length > 0 && (
+        <>
+          <Separator className="my-8" />
+          <div className="flex items-center justify-between">
+            {prevChallenge ? (
+              <Link href={`/challenges/${prevChallenge.slug}`}>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  {prevChallenge.title}
+                </Button>
+              </Link>
+            ) : (
+              <div />
+            )}
+            {nextChallenge ? (
+              <Link href={`/challenges/${nextChallenge.slug}`}>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  {nextChallenge.title}
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -12,7 +12,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const path = getPathBySlug(slug);
+  const path = await getPathBySlug(slug);
   if (!path) return { title: "Path Not Found" };
   return {
     title: path.title,
@@ -22,10 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PathDetailPage({ params }: Props) {
   const { slug } = await params;
-  const path = getPathBySlug(slug);
+  const path = await getPathBySlug(slug);
   if (!path) notFound();
 
-  const challenges = getChallengesByPath(slug);
+  const challenges = await getChallengesByPath(slug);
 
-  return <PathDetail path={path} challenges={challenges} />;
+  return (
+    <PathDetail
+      path={JSON.parse(JSON.stringify(path))}
+      challenges={JSON.parse(JSON.stringify(challenges))}
+    />
+  );
 }

@@ -4,9 +4,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight, Code2, Gamepad2, Smartphone, Bot } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type { PathData } from "@/data/challenges";
 
-type PathWithStats = PathData & {
+type PathWithStats = {
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
   challengeCount: number;
   difficultyBreakdown: {
     beginner: number;

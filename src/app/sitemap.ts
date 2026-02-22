@@ -1,18 +1,23 @@
 import type { MetadataRoute } from "next";
-import { getAllChallenges, getAllPaths } from "@/lib/challenges";
+import { prisma } from "@/lib/prisma";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://aiinaction.top";
   const now = new Date();
 
-  const challenges = getAllChallenges().map((c) => ({
+  const [allChallenges, allPaths] = await Promise.all([
+    prisma.challenge.findMany({ select: { slug: true } }),
+    prisma.learningPath.findMany({ select: { slug: true } }),
+  ]);
+
+  const challenges = allChallenges.map((c) => ({
     url: `${baseUrl}/challenges/${c.slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  const paths = getAllPaths().map((p) => ({
+  const paths = allPaths.map((p) => ({
     url: `${baseUrl}/paths/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,

@@ -1,5 +1,5 @@
 import { prisma } from "./prisma";
-import type { Difficulty } from "@prisma/client";
+import type { Difficulty, Prisma } from "@prisma/client";
 
 export type ChallengeFilters = {
   categorySlug?: string;
@@ -14,7 +14,7 @@ export type ChallengeFilters = {
 export async function getChallenges(filters: ChallengeFilters = {}) {
   const { categorySlug, difficulty, tag, search, official, page = 1, pageSize = 30 } = filters;
 
-  const where: Parameters<typeof prisma.challenge.findMany>[0]["where"] = {};
+  const where: Prisma.ChallengeWhereInput = {};
 
   if (categorySlug) {
     where.category = { slug: categorySlug };
@@ -148,21 +148,4 @@ export async function getStats() {
   return { challengeCount, categoryCount, userCount, projectCount };
 }
 
-export const difficultyConfig = {
-  BEGINNER: {
-    label: "Beginner",
-    className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-  },
-  INTERMEDIATE: {
-    label: "Intermediate",
-    className: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  },
-  ADVANCED: {
-    label: "Advanced",
-    className: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20",
-  },
-  EXPERT: {
-    label: "Expert",
-    className: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
-  },
-} as const;
+export { difficultyConfig } from "./constants";
