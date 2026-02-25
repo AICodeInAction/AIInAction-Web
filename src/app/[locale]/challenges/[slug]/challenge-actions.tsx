@@ -7,7 +7,7 @@ import { useSession, signIn } from "next-auth/react";
 import { Link } from "@/i18n/navigation";
 import { toggleLike } from "@/actions/likes";
 import { forkChallenge, deleteChallenge } from "@/actions/challenges";
-import { markComplete, type CompletionResult } from "@/actions/completions";
+import { markComplete, saveReflection, type CompletionResult } from "@/actions/completions";
 import { CompletionModal } from "@/components/gamification/completion-modal";
 import { useTranslations } from "next-intl";
 
@@ -52,6 +52,10 @@ export function ChallengeActions({ challengeId, slug, likesCount, liked, isAutho
       setCompletionResult(result);
       setShowModal(true);
     });
+  };
+
+  const handleSubmitReflection = (reflection: string, isPublic: boolean) => {
+    startTransition(() => saveReflection(challengeId, reflection, isPublic));
   };
 
   const handleDelete = () => {
@@ -128,6 +132,7 @@ export function ChallengeActions({ challengeId, slug, likesCount, liked, isAutho
         open={showModal}
         onClose={() => setShowModal(false)}
         result={completionResult}
+        onSubmitReflection={handleSubmitReflection}
       />
     </>
   );
