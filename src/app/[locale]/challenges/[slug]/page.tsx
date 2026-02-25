@@ -24,10 +24,12 @@ import {
   getChallengeComments,
   difficultyConfig,
   hasUserLiked,
+  getPublicReflections,
 } from "@/lib/challenges";
 import { auth } from "@/lib/auth";
 import { ChallengeActions } from "./challenge-actions";
 import { CommentSection } from "./comment-section";
+import { ReflectionsSection } from "./reflections-section";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 type Props = {
@@ -84,11 +86,12 @@ export default async function ChallengeDetailPage({ params }: Props) {
     ? tCat(`${challenge.category.slug}.name`) : challenge.category?.name;
   const diffLabel = td.has(challenge.difficulty) ? td(challenge.difficulty) : diff.label;
 
-  const [pathChallenges, { comments, total: commentTotal }, liked] =
+  const [pathChallenges, { comments, total: commentTotal }, liked, reflections] =
     await Promise.all([
       challenge.path ? getChallengesByPath(challenge.path.slug) : Promise.resolve([]),
       getChallengeComments(challenge.id),
       userId ? hasUserLiked(userId, challenge.id) : Promise.resolve(false),
+      getPublicReflections(challenge.id),
     ]);
 
   const currentIndex = pathChallenges.findIndex((c) => c.slug === slug);
@@ -278,6 +281,16 @@ export default async function ChallengeDetailPage({ params }: Props) {
               ))}
             </ul>
           </section>
+        </>
+      )}
+
+      {/* Reflections */}
+      {reflections.length > 0 && (
+        <>
+          <Separator className="my-8" />
+          <ReflectionsSection
+            reflections={JSON.parse(JSON.stringify(reflections))}
+          />
         </>
       )}
 
