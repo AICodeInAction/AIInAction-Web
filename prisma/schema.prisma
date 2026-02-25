@@ -162,6 +162,8 @@ model ChallengeCompletion {
   challengeId String           @map("challenge_id")
   status      CompletionStatus @default(IN_PROGRESS)
   completedAt DateTime?        @map("completed_at")
+  reflection  String?          @db.Text
+  isPublic    Boolean          @default(true) @map("is_public")
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
