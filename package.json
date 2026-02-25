@@ -19,7 +19,8 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "pnpm tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:migrate-translations": "pnpm tsx scripts/migrate-translations.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
