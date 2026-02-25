@@ -24,6 +24,7 @@ import {
   getChallengeComments,
   difficultyConfig,
   hasUserLiked,
+  hasUserCompleted,
   getPublicReflections,
 } from "@/lib/challenges";
 import { auth } from "@/lib/auth";
@@ -86,11 +87,12 @@ export default async function ChallengeDetailPage({ params }: Props) {
     ? tCat(`${challenge.category.slug}.name`) : challenge.category?.name;
   const diffLabel = td.has(challenge.difficulty) ? td(challenge.difficulty) : diff.label;
 
-  const [pathChallenges, { comments, total: commentTotal }, liked, reflections] =
+  const [pathChallenges, { comments, total: commentTotal }, liked, completed, reflections] =
     await Promise.all([
       challenge.path ? getChallengesByPath(challenge.path.slug) : Promise.resolve([]),
       getChallengeComments(challenge.id),
       userId ? hasUserLiked(userId, challenge.id) : Promise.resolve(false),
+      userId ? hasUserCompleted(userId, challenge.id) : Promise.resolve(false),
       getPublicReflections(challenge.id),
     ]);
 
@@ -212,6 +214,7 @@ export default async function ChallengeDetailPage({ params }: Props) {
         slug={challenge.slug}
         likesCount={challenge.likesCount}
         liked={liked}
+        completed={completed}
         isAuthor={isAuthor}
       />
 

@@ -16,10 +16,11 @@ type Props = {
   slug: string;
   likesCount: number;
   liked: boolean;
+  completed: boolean;
   isAuthor: boolean;
 };
 
-export function ChallengeActions({ challengeId, slug, likesCount, liked, isAuthor }: Props) {
+export function ChallengeActions({ challengeId, slug, likesCount, liked, completed, isAuthor }: Props) {
   const { data: session } = useSession();
   const [isPending, startTransition] = useTransition();
   const [completionResult, setCompletionResult] = useState<CompletionResult | null>(null);
@@ -81,10 +82,17 @@ export function ChallengeActions({ challengeId, slug, likesCount, liked, isAutho
               <GitFork className="h-4 w-4" />
               {t("fork")}
             </Button>
-            <Button className="gap-2" onClick={handleComplete} disabled={isPending}>
-              <CheckCircle className="h-4 w-4" />
-              {t("markComplete")}
-            </Button>
+            {completed ? (
+              <Button variant="outline" className="gap-2 text-green-600 border-green-600/30 pointer-events-none" disabled>
+                <CheckCircle className="h-4 w-4 fill-green-600 text-white" />
+                {t("completed")}
+              </Button>
+            ) : (
+              <Button className="gap-2" onClick={handleComplete} disabled={isPending}>
+                <CheckCircle className="h-4 w-4" />
+                {t("markComplete")}
+              </Button>
+            )}
             <Button variant="outline" className="gap-2" asChild>
               <Link href={`/showcase/submit?challenge=${slug}`}>
                 <Github className="h-4 w-4" />

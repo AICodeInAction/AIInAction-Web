@@ -71,10 +71,12 @@
     "objectives": "目标",
     "hints": "提示",
     "resources": "资源",
+    "fork": "Fork",
     "forkedFrom": "Fork 自",
     "by": "作者",
     "signInTrack": "登录以跟踪进度",
     "markComplete": "标记为完成",
+    "completed": "已完成",
     "shareSolution": "分享你的方案",
     "deleteConfirm": "确定要删除这个挑战吗？此操作不可撤销。",
     "notFound": "未找到挑战"

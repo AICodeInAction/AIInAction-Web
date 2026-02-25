@@ -71,10 +71,12 @@
     "objectives": "Objectives",
     "hints": "Hints",
     "resources": "Resources",
+    "fork": "Fork",
     "forkedFrom": "Forked from",
     "by": "by",
     "signInTrack": "Sign in to Track Progress",
     "markComplete": "Mark as Complete",
+    "completed": "Completed",
     "shareSolution": "Share Your Solution",
     "deleteConfirm": "Are you sure you want to delete this challenge? This cannot be undone.",
     "notFound": "Challenge Not Found"

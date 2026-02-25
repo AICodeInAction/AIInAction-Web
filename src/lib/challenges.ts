@@ -173,4 +173,12 @@ export async function getPublicReflections(challengeId: string) {
   });
 }
 
+export async function hasUserCompleted(userId: string, challengeId: string) {
+  const completion = await prisma.challengeCompletion.findUnique({
+    where: { userId_challengeId: { userId, challengeId } },
+    select: { status: true },
+  });
+  return completion?.status === "COMPLETED";
+}
+
 export { difficultyConfig } from "./constants";
