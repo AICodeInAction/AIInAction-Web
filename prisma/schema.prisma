@@ -56,6 +56,8 @@ model User {
   authoredChallenges Challenge[]        @relation("AuthoredChallenges")
   challengeLikes     ChallengeLike[]
   challengeComments  ChallengeComment[]
+  stats              UserStats?
+  achievements       UserAchievement[]
 
   @@map("users")
 }
@@ -211,6 +213,53 @@ model ChallengeComment {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("challenge_comments")
+}
+
+model UserStats {
+  id             String    @id @default(cuid())
+  userId         String    @unique @map("user_id")
+  xp             Int       @default(0)
+  level          Int       @default(1)
+  currentStreak  Int       @default(0) @map("current_streak")
+  longestStreak  Int       @default(0) @map("longest_streak")
+  lastActiveDate DateTime? @map("last_active_date")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@map("user_stats")
+}
+
+model Achievement {
+  id          String            @id @default(cuid())
+  slug        String            @unique
+  name        String
+  description String
+  icon        String
+  xpReward    Int               @default(0) @map("xp_reward")
+  rarity      AchievementRarity @default(COMMON)
+  unlockedBy  UserAchievement[]
+  createdAt   DateTime          @default(now()) @map("created_at")
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  userId        String      @map("user_id")
+  achievementId String      @map("achievement_id")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  unlockedAt    DateTime    @default(now()) @map("unlocked_at")
+
+  @@id([userId, achievementId])
+  @@map("user_achievements")
+}
+
+enum AchievementRarity {
+  COMMON
+  RARE
+  EPIC
+  LEGENDARY
 }
 
 enum Difficulty {

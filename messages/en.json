@@ -1,0 +1,391 @@
+{
+  "common": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "create": "Create",
+    "loading": "Loading...",
+    "viewAll": "View all",
+    "search": "Search",
+    "prev": "Prev",
+    "next": "Next",
+    "likes": "{count} likes",
+    "forks": "{count} forks",
+    "comments": "{count} comments",
+    "official": "Official",
+    "community": "Community",
+    "back": "Back",
+    "continue": "Continue",
+    "delete": "Delete",
+    "edit": "Edit",
+    "share": "Share",
+    "fork": "Fork",
+    "challenges": "challenges",
+    "all": "All"
+  },
+  "nav": {
+    "challenges": "Challenges",
+    "paths": "Learning Paths",
+    "showcase": "Showcase",
+    "leaderboard": "Leaderboard"
+  },
+  "home": {
+    "badge": "AI Practice Platform",
+    "titleLine1": "Learn",
+    "titleHighlight": "AI",
+    "titleLine2": "by Building",
+    "subtitle": "From AI agents to creative tools, master modern development through hands-on challenges. Build, share, and grow with the community.",
+    "startBuilding": "Start Building",
+    "createChallenge": "Create a Challenge",
+    "signInGithub": "Sign in with GitHub",
+    "challengesStat": "Challenges",
+    "categoriesStat": "Categories",
+    "buildersStat": "Builders",
+    "openSourceStat": "Source Projects",
+    "sharedProjectsStat": "Shared Projects",
+    "exploreTitle": "Explore by",
+    "exploreHighlight": "Category",
+    "exploreSubtitle": "{count} categories covering web, games, mobile, and AI-powered tools.",
+    "popularTitle": "Popular",
+    "popularHighlight": "Challenges",
+    "popularSubtitle": "Top challenges from official content and the community.",
+    "viewAllChallenges": "View all challenges",
+    "ctaTitle": "Ready to",
+    "ctaHighlight": "Start Building",
+    "ctaSubtitle": "Join the community. Pick a challenge. Build something extraordinary. Share it with the world.",
+    "browseChallenges": "Browse Challenges"
+  },
+  "challenges": {
+    "title": "Challenges",
+    "subtitle": "Hands-on AI projects from beginner to expert. Pick a challenge and start building.",
+    "searchPlaceholder": "Search challenges...",
+    "tabAll": "All",
+    "tabOfficial": "Official",
+    "tabCommunity": "Community",
+    "allCategories": "All Categories",
+    "allLevels": "All Levels",
+    "showingRange": "Showing {from}-{to} of {total} challenges",
+    "noResults": "No challenges found",
+    "noResultsHint": "Try adjusting your filters or search query."
+  },
+  "challenge": {
+    "objectives": "Objectives",
+    "hints": "Hints",
+    "resources": "Resources",
+    "forkedFrom": "Forked from",
+    "by": "by",
+    "signInTrack": "Sign in to Track Progress",
+    "markComplete": "Mark as Complete",
+    "shareSolution": "Share Your Solution",
+    "deleteConfirm": "Are you sure you want to delete this challenge? This cannot be undone.",
+    "notFound": "Challenge Not Found"
+  },
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Leave a comment...",
+    "submit": "Comment",
+    "signIn": "Sign in",
+    "signInHint": "to leave a comment.",
+    "noComments": "No comments yet. Be the first to comment!",
+    "deleteConfirm": "Delete this comment?"
+  },
+  "challengeForm": {
+    "createTitle": "Create a Challenge",
+    "createSubtitle": "Share a challenge with the community. Describe what to build and provide helpful hints.",
+    "editTitle": "Edit Challenge",
+    "editSubtitle": "Update your challenge details.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "e.g., Build a Real-time Chat App",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe the challenge in detail...",
+    "difficultyLabel": "Difficulty",
+    "selectDifficulty": "Select difficulty",
+    "categoryLabel": "Category",
+    "noCategory": "No category",
+    "tagsLabel": "Tags (comma-separated)",
+    "tagsPlaceholder": "e.g., react, websocket, real-time",
+    "estimatedTimeLabel": "Estimated Time",
+    "estimatedTimePlaceholder": "e.g., 4-6 hours",
+    "objectivesLabel": "Objectives",
+    "objectivesPlaceholder": "e.g., Implement user authentication",
+    "hintsLabel": "Hints",
+    "hintsPlaceholder": "e.g., Consider using WebSocket for real-time updates",
+    "resourcesLabel": "Resources (URLs)",
+    "resourcesPlaceholder": "e.g., https://developer.mozilla.org/...",
+    "addObjective": "Add objective",
+    "addHint": "Add hint",
+    "addResource": "Add resource",
+    "createButton": "Create Challenge",
+    "updateButton": "Update Challenge",
+    "required": "*"
+  },
+  "paths": {
+    "title": "Learning Paths",
+    "subtitle": "Structured tracks from fundamentals to expert-level builds. Follow a path or explore freely.",
+    "challengeCount": "{count} challenges",
+    "startPath": "Start Path",
+    "backToPaths": "Learning Paths"
+  },
+  "profile": {
+    "title": "User Profile",
+    "profileOf": "{name}'s Profile",
+    "joined": "Joined {year}",
+    "completed": "Completed",
+    "published": "Published",
+    "projects": "Projects",
+    "achievementsTab": "Achievements ({unlocked}/{total})",
+    "completedTab": "Completed Challenges",
+    "publishedTab": "Published Challenges",
+    "projectsTab": "Shared Projects",
+    "locked": "Locked",
+    "noAchievements": "No achievements available yet.",
+    "noCompletions": "No completed challenges yet.",
+    "completionCount": "{count} challenges completed.",
+    "noPublished": "No published challenges yet.",
+    "noProjects": "No shared projects yet.",
+    "projectCount": "{count} projects shared.",
+    "browseChallenges": "Browse Challenges",
+    "createChallenge": "Create a Challenge",
+    "visitShowcase": "Visit Showcase",
+    "aiBuilder": "AI builder"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Top AI builders ranked by experience and consistency.",
+    "totalXP": "Total XP",
+    "currentStreak": "Current Streak",
+    "noLeaderboard": "No one on the leaderboard yet. Complete a challenge to get started!",
+    "noStreaks": "No active streaks yet. Start your streak today!",
+    "days": "{count} days"
+  },
+  "showcase": {
+    "title": "Community Showcase",
+    "subtitle": "Projects built by the community. Get inspired and share yours.",
+    "shareProject": "Share Project",
+    "signInShare": "Sign in to Share",
+    "searchPlaceholder": "Search projects...",
+    "source": "Source",
+    "demo": "Demo",
+    "noProjects": "No projects found",
+    "noProjectsHint": "Try a different search or be the first to share!",
+    "shareTitle": "Share Your Project",
+    "projectTitle": "Project Title",
+    "projectTitlePlaceholder": "My Awesome Project",
+    "githubUrl": "GitHub URL",
+    "githubUrlPlaceholder": "https://github.com/user/repo",
+    "demoUrl": "Demo URL",
+    "demoUrlOptional": "(optional)",
+    "demoUrlPlaceholder": "https://my-project.vercel.app",
+    "description": "Description",
+    "descriptionPlaceholder": "Tell us about your project...",
+    "tags": "Tags",
+    "tagsHint": "(comma-separated)",
+    "tagsPlaceholder": "react, nextjs, ai",
+    "sharing": "Sharing...",
+    "submitButton": "Share Project",
+    "backToShowcase": "Back to Showcase",
+    "sharePageTitle": "Share Your Project",
+    "sharePageSubtitle": "Link your GitHub repository and share your work with the community."
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to track your progress and share projects",
+    "continueGithub": "Continue with GitHub",
+    "terms": "By signing in, you agree to our Terms of Service and Privacy Policy."
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "subtitle": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home"
+  },
+  "loading": {
+    "text": "Loading..."
+  },
+  "gamification": {
+    "dayStreak": "Day Streak",
+    "best": "Best",
+    "levelUp": "Level Up!",
+    "challengeCompleted": "Challenge Completed!",
+    "achievementsUnlocked": "Achievements Unlocked",
+    "xp": "XP",
+    "nextLevel": "Next: Lv.{level}",
+    "max": "MAX",
+    "level": "Level {level}",
+    "completionsInYear": "{count} completions in {year}",
+    "less": "Less",
+    "more": "More",
+    "completion": "{count, plural, =1 {# completion} other {# completions}}"
+  },
+  "achievements": {
+    "first-step": {
+      "name": "First Step",
+      "description": "Complete your first challenge"
+    },
+    "ten-complete": {
+      "name": "Perfect Ten",
+      "description": "Complete 10 challenges"
+    },
+    "hundred-complete": {
+      "name": "Centurion",
+      "description": "Complete 100 challenges"
+    },
+    "all-difficulties": {
+      "name": "All-Rounder",
+      "description": "Complete 1 challenge at each difficulty"
+    },
+    "green-belt": {
+      "name": "Green Belt",
+      "description": "Complete 5 BEGINNER challenges"
+    },
+    "blue-belt": {
+      "name": "Blue Belt",
+      "description": "Complete 5 INTERMEDIATE challenges"
+    },
+    "red-belt": {
+      "name": "Red Belt",
+      "description": "Complete 5 ADVANCED challenges"
+    },
+    "black-belt": {
+      "name": "Black Belt",
+      "description": "Complete 1 EXPERT challenge"
+    },
+    "streak-3": {
+      "name": "Three-Day Fire",
+      "description": "3-day completion streak"
+    },
+    "streak-7": {
+      "name": "Weekly Warrior",
+      "description": "7-day completion streak"
+    },
+    "streak-30": {
+      "name": "Unstoppable",
+      "description": "30-day completion streak"
+    },
+    "creator": {
+      "name": "Creator",
+      "description": "Publish your first challenge"
+    },
+    "popular": {
+      "name": "Popular",
+      "description": "Get 10 likes on your challenges"
+    },
+    "influencer": {
+      "name": "Influencer",
+      "description": "Have your challenges forked 5 times"
+    },
+    "path-pioneer": {
+      "name": "Path Pioneer",
+      "description": "Complete your first learning path"
+    },
+    "path-master": {
+      "name": "Path Master",
+      "description": "Complete all learning paths"
+    }
+  },
+  "levels": {
+    "1": "AI Novice",
+    "2": "AI Explorer",
+    "3": "AI Practitioner",
+    "4": "Prompt Engineer",
+    "5": "AI Builder",
+    "6": "Full-Stack AI Engineer",
+    "7": "AI Product Creator",
+    "8": "AI Application Expert",
+    "9": "AI Architect",
+    "10": "AI Master",
+    "11": "Legend: AI Leader I",
+    "12": "Legend: AI Leader II",
+    "13": "Legend: AI Leader III",
+    "14": "Legend: AI Leader IV",
+    "15": "Legend: AI Leader V",
+    "16": "Mythic: AI Pioneer I",
+    "17": "Mythic: AI Pioneer II",
+    "18": "Mythic: AI Pioneer III",
+    "19": "Mythic: AI Pioneer IV",
+    "20": "Mythic: AI Pioneer V"
+  },
+  "difficulty": {
+    "BEGINNER": "Beginner",
+    "INTERMEDIATE": "Intermediate",
+    "ADVANCED": "Advanced",
+    "EXPERT": "Expert"
+  },
+  "rarity": {
+    "COMMON": "Common",
+    "RARE": "Rare",
+    "EPIC": "Epic",
+    "LEGENDARY": "Legendary"
+  },
+  "heatmap": {
+    "months": {
+      "0": "Jan",
+      "1": "Feb",
+      "2": "Mar",
+      "3": "Apr",
+      "4": "May",
+      "5": "Jun",
+      "6": "Jul",
+      "7": "Aug",
+      "8": "Sep",
+      "9": "Oct",
+      "10": "Nov",
+      "11": "Dec"
+    },
+    "days": {
+      "mon": "Mon",
+      "wed": "Wed",
+      "fri": "Fri"
+    }
+  },
+  "footer": {
+    "platform": "Platform",
+    "community": "Community",
+    "legal": "Legal",
+    "challenges": "Challenges",
+    "learningPaths": "Learning Paths",
+    "showcase": "Showcase",
+    "github": "GitHub",
+    "projects": "Projects",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "tagline": "Learn AI by building real projects. From beginner to expert, one challenge at a time.",
+    "copyright": "© {year} AI In Action. All rights reserved."
+  },
+  "metadata": {
+    "siteTitle": "AI In Action - Learn AI by Building",
+    "siteDescription": "Master AI through hands-on challenge projects. Build real web apps, games, mobile apps, and AI tools.",
+    "challengesTitle": "Challenges",
+    "challengesDescription": "Browse AI practice challenges from beginner to expert.",
+    "pathsTitle": "Learning Paths",
+    "pathsDescription": "Structured learning paths from beginner to expert. Web, Game, Mobile, and AI Agent development.",
+    "leaderboardTitle": "Leaderboard",
+    "leaderboardDescription": "See who's leading in XP and streaks",
+    "createTitle": "Create Challenge",
+    "createDescription": "Create a new community challenge.",
+    "editTitle": "Edit Challenge"
+  },
+  "categories": {
+    "web-development": { "name": "Web Development", "description": "Build modern web applications from responsive portfolios to full-stack platforms." },
+    "game-development": { "name": "Game Development", "description": "Create browser-based games from classic arcade titles to multiplayer worlds." },
+    "mobile-development": { "name": "Mobile App Development", "description": "Ship cross-platform mobile apps with React Native and Expo." },
+    "ai-agents": { "name": "AI Agents & Automation", "description": "Build intelligent AI-powered agents, from chat bots to autonomous research systems." },
+    "ai-writing": { "name": "AI Writing & Content", "description": "Create AI-powered writing tools, content generators, and text transformation apps." },
+    "ai-image": { "name": "AI Image & Design", "description": "Build image generation, editing, and computer vision applications." },
+    "ai-video": { "name": "AI Video Generation", "description": "Create AI-powered video generation, editing, and analysis tools." },
+    "ai-data": { "name": "AI Data Analysis", "description": "Build intelligent data analysis, visualization, and insight generation tools." },
+    "ai-audio": { "name": "AI Audio & Speech", "description": "Create speech recognition, text-to-speech, music generation, and audio processing apps." },
+    "ai-coding": { "name": "AI-Assisted Coding", "description": "Build AI-powered code generation, review, debugging, and developer tools." }
+  },
+  "pathContent": {
+    "web-development": { "title": "Web Development", "description": "Build modern web applications from responsive portfolios to full-stack platforms. Master HTML, CSS, JavaScript, React, Next.js, databases, and deployment." },
+    "game-development": { "title": "Game Development", "description": "Create browser-based games from classic arcade titles to multiplayer worlds. Learn canvas, physics, procedural generation, and game architecture." },
+    "mobile-development": { "title": "Mobile App Development", "description": "Ship cross-platform mobile apps with React Native and Expo. Cover gestures, offline-first, device APIs, and app store deployment." },
+    "ai-agents": { "title": "AI Agents & LLM Projects", "description": "Build intelligent AI-powered applications. From chat interfaces to autonomous research agents, master prompting, RAG, tool use, and multi-agent systems." },
+    "ai-writing": { "title": "AI Writing & Content", "description": "Master AI-powered text generation and NLP. Build content generators, writing assistants, translation tools, and publishing platforms using large language models." },
+    "ai-image": { "title": "AI Image & Design", "description": "Create AI-powered visual tools from avatar generators to full creative studios. Master image generation APIs, computer vision, style transfer, and visual AI pipelines." },
+    "ai-video": { "title": "AI Video Generation", "description": "Build AI-powered video tools from auto-captioning to full production suites. Master video generation, editing automation, real-time effects, and streaming pipelines." },
+    "ai-data": { "title": "AI Data Analysis", "description": "Build intelligent data tools from CSV analyzers to full analytics platforms. Master AI-powered visualization, predictive modeling, NL querying, and real-time analytics." },
+    "ai-audio": { "title": "AI Audio & Speech", "description": "Create AI audio applications from text-to-speech readers to music production suites. Master speech recognition, voice synthesis, audio processing, and real-time translation." },
+    "ai-coding": { "title": "AI-Assisted Coding", "description": "Build AI developer tools from code explainers to pair-programming IDEs. Master code generation, automated review, intelligent debugging, and AI-powered development workflows." }
+  }
+}

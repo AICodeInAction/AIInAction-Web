@@ -6,6 +6,7 @@ import {
   challenges,
   officialCategories,
 } from "../src/data/challenges";
+import { ACHIEVEMENT_DEFINITIONS } from "../src/lib/achievements";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -131,6 +132,30 @@ async function main() {
   }
 
   console.log(`  Seeded ${challenges.length} challenges.`);
+
+  // 4. Upsert achievements
+  for (const achievement of ACHIEVEMENT_DEFINITIONS) {
+    await prisma.achievement.upsert({
+      where: { slug: achievement.slug },
+      update: {
+        name: achievement.name,
+        description: achievement.description,
+        icon: achievement.icon,
+        xpReward: achievement.xpReward,
+        rarity: achievement.rarity,
+      },
+      create: {
+        slug: achievement.slug,
+        name: achievement.name,
+        description: achievement.description,
+        icon: achievement.icon,
+        xpReward: achievement.xpReward,
+        rarity: achievement.rarity,
+      },
+    });
+  }
+  console.log(`  Seeded ${ACHIEVEMENT_DEFINITIONS.length} achievements.`);
+
   console.log("Done.");
 }
 

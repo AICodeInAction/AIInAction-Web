@@ -1,0 +1,391 @@
+{
+  "common": {
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "create": "创建",
+    "loading": "加载中...",
+    "viewAll": "查看全部",
+    "search": "搜索",
+    "prev": "上一页",
+    "next": "下一页",
+    "likes": "{count} 个赞",
+    "forks": "{count} 次 Fork",
+    "comments": "{count} 条评论",
+    "official": "官方",
+    "community": "社区",
+    "back": "返回",
+    "continue": "继续",
+    "delete": "删除",
+    "edit": "编辑",
+    "share": "分享",
+    "fork": "Fork",
+    "challenges": "个挑战",
+    "all": "全部"
+  },
+  "nav": {
+    "challenges": "挑战",
+    "paths": "学习路径",
+    "showcase": "展示",
+    "leaderboard": "排行榜"
+  },
+  "home": {
+    "badge": "AI 实践平台",
+    "titleLine1": "以实战学",
+    "titleHighlight": "AI",
+    "titleLine2": "边做边学",
+    "subtitle": "从 AI 智能体到创意工具，通过动手挑战掌握现代开发技术。构建、分享，与社区共同成长。",
+    "startBuilding": "开始构建",
+    "createChallenge": "创建挑战",
+    "signInGithub": "使用 GitHub 登录",
+    "challengesStat": "挑战",
+    "categoriesStat": "分类",
+    "buildersStat": "开发者",
+    "openSourceStat": "开源项目",
+    "sharedProjectsStat": "共享项目",
+    "exploreTitle": "按",
+    "exploreHighlight": "分类",
+    "exploreSubtitle": "{count} 个分类涵盖 Web、游戏、移动端和 AI 驱动工具。",
+    "popularTitle": "热门",
+    "popularHighlight": "挑战",
+    "popularSubtitle": "来自官方和社区的热门挑战。",
+    "viewAllChallenges": "查看全部挑战",
+    "ctaTitle": "准备好",
+    "ctaHighlight": "开始构建",
+    "ctaSubtitle": "加入社区。选一个挑战。构建不凡之作。分享给全世界。",
+    "browseChallenges": "浏览挑战"
+  },
+  "challenges": {
+    "title": "挑战",
+    "subtitle": "从入门到专家的 AI 动手项目。选一个挑战，开始构建。",
+    "searchPlaceholder": "搜索挑战...",
+    "tabAll": "全部",
+    "tabOfficial": "官方",
+    "tabCommunity": "社区",
+    "allCategories": "全部分类",
+    "allLevels": "全部难度",
+    "showingRange": "显示第 {from}-{to} 条，共 {total} 个挑战",
+    "noResults": "未找到挑战",
+    "noResultsHint": "尝试调整筛选条件或搜索关键词。"
+  },
+  "challenge": {
+    "objectives": "目标",
+    "hints": "提示",
+    "resources": "资源",
+    "forkedFrom": "Fork 自",
+    "by": "作者",
+    "signInTrack": "登录以跟踪进度",
+    "markComplete": "标记为完成",
+    "shareSolution": "分享你的方案",
+    "deleteConfirm": "确定要删除这个挑战吗？此操作不可撤销。",
+    "notFound": "未找到挑战"
+  },
+  "comments": {
+    "title": "评论",
+    "placeholder": "留下评论...",
+    "submit": "评论",
+    "signIn": "登录",
+    "signInHint": "后发表评论。",
+    "noComments": "暂无评论。成为第一个评论的人！",
+    "deleteConfirm": "删除此评论？"
+  },
+  "challengeForm": {
+    "createTitle": "创建挑战",
+    "createSubtitle": "与社区分享一个挑战。描述要构建什么，并提供有用的提示。",
+    "editTitle": "编辑挑战",
+    "editSubtitle": "更新挑战详情。",
+    "titleLabel": "标题",
+    "titlePlaceholder": "例如：构建一个实时聊天应用",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "详细描述挑战内容...",
+    "difficultyLabel": "难度",
+    "selectDifficulty": "选择难度",
+    "categoryLabel": "分类",
+    "noCategory": "无分类",
+    "tagsLabel": "标签（逗号分隔）",
+    "tagsPlaceholder": "例如：react, websocket, 实时",
+    "estimatedTimeLabel": "预计时间",
+    "estimatedTimePlaceholder": "例如：4-6 小时",
+    "objectivesLabel": "目标",
+    "objectivesPlaceholder": "例如：实现用户认证",
+    "hintsLabel": "提示",
+    "hintsPlaceholder": "例如：考虑使用 WebSocket 实现实时更新",
+    "resourcesLabel": "资源（URL）",
+    "resourcesPlaceholder": "例如：https://developer.mozilla.org/...",
+    "addObjective": "添加目标",
+    "addHint": "添加提示",
+    "addResource": "添加资源",
+    "createButton": "创建挑战",
+    "updateButton": "更新挑战",
+    "required": "*"
+  },
+  "paths": {
+    "title": "学习路径",
+    "subtitle": "从基础到专家级构建的结构化课程。跟随路径或自由探索。",
+    "challengeCount": "{count} 个挑战",
+    "startPath": "开始学习",
+    "backToPaths": "学习路径"
+  },
+  "profile": {
+    "title": "用户资料",
+    "profileOf": "{name} 的主页",
+    "joined": "{year} 年加入",
+    "completed": "已完成",
+    "published": "已发布",
+    "projects": "项目",
+    "achievementsTab": "成就 ({unlocked}/{total})",
+    "completedTab": "已完成的挑战",
+    "publishedTab": "已发布的挑战",
+    "projectsTab": "共享项目",
+    "locked": "未解锁",
+    "noAchievements": "暂无可用成就。",
+    "noCompletions": "暂无已完成的挑战。",
+    "completionCount": "已完成 {count} 个挑战。",
+    "noPublished": "暂无已发布的挑战。",
+    "noProjects": "暂无共享项目。",
+    "projectCount": "已分享 {count} 个项目。",
+    "browseChallenges": "浏览挑战",
+    "createChallenge": "创建挑战",
+    "visitShowcase": "访问展示",
+    "aiBuilder": "AI 开发者"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "subtitle": "按经验和坚持度排名的顶尖 AI 开发者。",
+    "totalXP": "总经验值",
+    "currentStreak": "当前连续",
+    "noLeaderboard": "排行榜暂无数据。完成一个挑战即可上榜！",
+    "noStreaks": "暂无活跃连续记录。今天开始你的连续吧！",
+    "days": "{count} 天"
+  },
+  "showcase": {
+    "title": "社区展示",
+    "subtitle": "社区成员构建的项目。获取灵感，分享你的作品。",
+    "shareProject": "分享项目",
+    "signInShare": "登录后分享",
+    "searchPlaceholder": "搜索项目...",
+    "source": "源码",
+    "demo": "演示",
+    "noProjects": "未找到项目",
+    "noProjectsHint": "换个搜索词试试，或成为第一个分享的人！",
+    "shareTitle": "分享你的项目",
+    "projectTitle": "项目标题",
+    "projectTitlePlaceholder": "我的精彩项目",
+    "githubUrl": "GitHub 链接",
+    "githubUrlPlaceholder": "https://github.com/user/repo",
+    "demoUrl": "演示链接",
+    "demoUrlOptional": "（可选）",
+    "demoUrlPlaceholder": "https://my-project.vercel.app",
+    "description": "描述",
+    "descriptionPlaceholder": "介绍一下你的项目...",
+    "tags": "标签",
+    "tagsHint": "（逗号分隔）",
+    "tagsPlaceholder": "react, nextjs, ai",
+    "sharing": "分享中...",
+    "submitButton": "分享项目",
+    "backToShowcase": "返回展示",
+    "sharePageTitle": "分享你的项目",
+    "sharePageSubtitle": "链接你的 GitHub 仓库，与社区分享你的作品。"
+  },
+  "login": {
+    "title": "欢迎回来",
+    "subtitle": "登录以跟踪进度和分享项目",
+    "continueGithub": "使用 GitHub 继续",
+    "terms": "登录即表示你同意我们的服务条款和隐私政策。"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "页面未找到",
+    "subtitle": "你访问的页面不存在或已被移动。",
+    "backHome": "返回首页"
+  },
+  "loading": {
+    "text": "加载中..."
+  },
+  "gamification": {
+    "dayStreak": "天连续",
+    "best": "最佳",
+    "levelUp": "升级了！",
+    "challengeCompleted": "挑战完成！",
+    "achievementsUnlocked": "解锁成就",
+    "xp": "经验值",
+    "nextLevel": "下一级：Lv.{level}",
+    "max": "满级",
+    "level": "等级 {level}",
+    "completionsInYear": "{year} 年 {count} 次完成",
+    "less": "少",
+    "more": "多",
+    "completion": "{count, plural, =1 {# 次完成} other {# 次完成}}"
+  },
+  "achievements": {
+    "first-step": {
+      "name": "第一步",
+      "description": "完成第一个挑战"
+    },
+    "ten-complete": {
+      "name": "十全十美",
+      "description": "完成 10 个挑战"
+    },
+    "hundred-complete": {
+      "name": "百炼成钢",
+      "description": "完成 100 个挑战"
+    },
+    "all-difficulties": {
+      "name": "全能 AI",
+      "description": "完成全部 4 个难度各 1 个"
+    },
+    "green-belt": {
+      "name": "绿带",
+      "description": "完成 5 个入门挑战"
+    },
+    "blue-belt": {
+      "name": "蓝带",
+      "description": "完成 5 个中级挑战"
+    },
+    "red-belt": {
+      "name": "红带",
+      "description": "完成 5 个高级挑战"
+    },
+    "black-belt": {
+      "name": "黑带",
+      "description": "完成 1 个专家挑战"
+    },
+    "streak-3": {
+      "name": "三日不息",
+      "description": "连续 3 天完成挑战"
+    },
+    "streak-7": {
+      "name": "周更达人",
+      "description": "连续 7 天完成挑战"
+    },
+    "streak-30": {
+      "name": "月不停歇",
+      "description": "连续 30 天完成挑战"
+    },
+    "creator": {
+      "name": "创作者",
+      "description": "发布第 1 个挑战"
+    },
+    "popular": {
+      "name": "受欢迎",
+      "description": "发布的挑战获得 10 个赞"
+    },
+    "influencer": {
+      "name": "影响力",
+      "description": "发布的挑战被 Fork 5 次"
+    },
+    "path-pioneer": {
+      "name": "路径先驱",
+      "description": "完成第一条学习路径"
+    },
+    "path-master": {
+      "name": "全路径大师",
+      "description": "完成所有学习路径"
+    }
+  },
+  "levels": {
+    "1": "AI 新手",
+    "2": "AI 探索者",
+    "3": "AI 实践者",
+    "4": "提示工程师",
+    "5": "AI 构建者",
+    "6": "全栈 AI 工程师",
+    "7": "AI 产品创作者",
+    "8": "AI 应用专家",
+    "9": "AI 架构师",
+    "10": "AI 大师",
+    "11": "传说·AI 领袖 I",
+    "12": "传说·AI 领袖 II",
+    "13": "传说·AI 领袖 III",
+    "14": "传说·AI 领袖 IV",
+    "15": "传说·AI 领袖 V",
+    "16": "神话·AI 先驱 I",
+    "17": "神话·AI 先驱 II",
+    "18": "神话·AI 先驱 III",
+    "19": "神话·AI 先驱 IV",
+    "20": "神话·AI 先驱 V"
+  },
+  "difficulty": {
+    "BEGINNER": "入门",
+    "INTERMEDIATE": "中级",
+    "ADVANCED": "高级",
+    "EXPERT": "专家"
+  },
+  "rarity": {
+    "COMMON": "普通",
+    "RARE": "稀有",
+    "EPIC": "史诗",
+    "LEGENDARY": "传说"
+  },
+  "heatmap": {
+    "months": {
+      "0": "1月",
+      "1": "2月",
+      "2": "3月",
+      "3": "4月",
+      "4": "5月",
+      "5": "6月",
+      "6": "7月",
+      "7": "8月",
+      "8": "9月",
+      "9": "10月",
+      "10": "11月",
+      "11": "12月"
+    },
+    "days": {
+      "mon": "周一",
+      "wed": "周三",
+      "fri": "周五"
+    }
+  },
+  "footer": {
+    "platform": "平台",
+    "community": "社区",
+    "legal": "法律",
+    "challenges": "挑战",
+    "learningPaths": "学习路径",
+    "showcase": "展示",
+    "github": "GitHub",
+    "projects": "项目",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "tagline": "通过构建真实项目学习 AI。从入门到专家，一次一个挑战。",
+    "copyright": "© {year} AI In Action. 保留所有权利。"
+  },
+  "metadata": {
+    "siteTitle": "AI In Action - 以实战学 AI",
+    "siteDescription": "通过动手挑战项目掌握 AI。构建真正的 Web 应用、游戏、移动应用和 AI 工具。",
+    "challengesTitle": "挑战",
+    "challengesDescription": "浏览从入门到专家级的 AI 实践挑战。",
+    "pathsTitle": "学习路径",
+    "pathsDescription": "从入门到专家的结构化学习路径。Web、游戏、移动端和 AI 智能体开发。",
+    "leaderboardTitle": "排行榜",
+    "leaderboardDescription": "查看经验值和连续天数排行",
+    "createTitle": "创建挑战",
+    "createDescription": "创建新的社区挑战。",
+    "editTitle": "编辑挑战"
+  },
+  "categories": {
+    "web-development": { "name": "Web 开发", "description": "从响应式作品集到全栈平台，构建现代 Web 应用。" },
+    "game-development": { "name": "游戏开发", "description": "从经典街机到多人世界，创建浏览器游戏。" },
+    "mobile-development": { "name": "移动应用开发", "description": "使用 React Native 和 Expo 构建跨平台移动应用。" },
+    "ai-agents": { "name": "AI 智能体与自动化", "description": "构建智能 AI 驱动的智能体，从聊天机器人到自主研究系统。" },
+    "ai-writing": { "name": "AI 写作与内容", "description": "创建 AI 驱动的写作工具、内容生成器和文本转换应用。" },
+    "ai-image": { "name": "AI 图像与设计", "description": "构建图像生成、编辑和计算机视觉应用。" },
+    "ai-video": { "name": "AI 视频生成", "description": "创建 AI 驱动的视频生成、编辑和分析工具。" },
+    "ai-data": { "name": "AI 数据分析", "description": "构建智能数据分析、可视化和洞察生成工具。" },
+    "ai-audio": { "name": "AI 音频与语音", "description": "创建语音识别、文字转语音、音乐生成和音频处理应用。" },
+    "ai-coding": { "name": "AI 辅助编程", "description": "构建 AI 驱动的代码生成、审查、调试和开发工具。" }
+  },
+  "pathContent": {
+    "web-development": { "title": "Web 开发", "description": "从响应式作品集到全栈平台，构建现代 Web 应用。掌握 HTML、CSS、JavaScript、React、Next.js、数据库和部署。" },
+    "game-development": { "title": "游戏开发", "description": "从经典街机到多人世界，创建浏览器游戏。学习 Canvas、物理引擎、程序化生成和游戏架构。" },
+    "mobile-development": { "title": "移动应用开发", "description": "使用 React Native 和 Expo 构建跨平台移动应用。涵盖手势、离线优先、设备 API 和应用商店部署。" },
+    "ai-agents": { "title": "AI 智能体与 LLM 项目", "description": "构建智能 AI 驱动应用。从聊天界面到自主研究智能体，掌握提示工程、RAG、工具使用和多智能体系统。" },
+    "ai-writing": { "title": "AI 写作与内容", "description": "掌握 AI 驱动的文本生成和 NLP。构建内容生成器、写作助手、翻译工具和发布平台。" },
+    "ai-image": { "title": "AI 图像与设计", "description": "从头像生成器到完整创意工作室，创建 AI 驱动的视觉工具。掌握图像生成 API、计算机视觉、风格迁移和视觉 AI 管线。" },
+    "ai-video": { "title": "AI 视频生成", "description": "从自动字幕到完整制作套件，构建 AI 驱动的视频工具。掌握视频生成、编辑自动化、实时特效和流媒体管线。" },
+    "ai-data": { "title": "AI 数据分析", "description": "从 CSV 分析器到完整分析平台，构建智能数据工具。掌握 AI 驱动的可视化、预测建模、自然语言查询和实时分析。" },
+    "ai-audio": { "title": "AI 音频与语音", "description": "从文字转语音朗读器到音乐制作套件，创建 AI 音频应用。掌握语音识别、语音合成、音频处理和实时翻译。" },
+    "ai-coding": { "title": "AI 辅助编程", "description": "从代码解释器到结对编程 IDE，构建 AI 开发者工具。掌握代码生成、自动审查、智能调试和 AI 驱动的开发工作流。" }
+  }
+}

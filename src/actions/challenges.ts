@@ -4,6 +4,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { awardXP } from "@/lib/gamification";
+import { checkAndAwardAchievements } from "@/lib/achievements";
 
 function slugify(text: string): string {
   return text
@@ -72,6 +74,10 @@ export async function createChallenge(formData: FormData) {
   });
 
   await syncTags(challenge.id, tags);
+
+  // Award XP for publishing a community challenge
+  await awardXP(session.user.id, 20);
+  await checkAndAwardAchievements(session.user.id, "challenge_publish");
 
   revalidatePath("/challenges");
   redirect(`/challenges/${challenge.slug}`);

@@ -1,32 +1,37 @@
-import Link from "next/link";
-import { Zap } from "lucide-react";
+"use client";
 
-const footerLinks = [
-  {
-    title: "Platform",
-    links: [
-      { href: "/challenges", label: "Challenges" },
-      { href: "/paths", label: "Learning Paths" },
-      { href: "/showcase", label: "Showcase" },
-    ],
-  },
-  {
-    title: "Community",
-    links: [
-      { href: "https://github.com", label: "GitHub" },
-      { href: "/showcase", label: "Projects" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-    ],
-  },
-];
+import { Zap } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
+
+  const footerLinks = [
+    {
+      title: t("platform"),
+      links: [
+        { href: "/challenges" as const, label: t("challenges") },
+        { href: "/paths" as const, label: t("learningPaths") },
+        { href: "/showcase" as const, label: t("showcase") },
+      ],
+    },
+    {
+      title: t("community"),
+      links: [
+        { href: "https://github.com", label: t("github"), external: true },
+        { href: "/showcase" as const, label: t("projects") },
+      ],
+    },
+    {
+      title: t("legal"),
+      links: [
+        { href: "/privacy" as const, label: t("privacy") },
+        { href: "/terms" as const, label: t("terms") },
+      ],
+    },
+  ];
+
   return (
     <footer className="relative border-t border-border bg-background">
       {/* Subtle grid */}
@@ -44,8 +49,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Learn AI by building real projects. From beginner to expert, one
-              challenge at a time.
+              {t("tagline")}
             </p>
           </div>
           {footerLinks.map((group) => (
@@ -53,13 +57,22 @@ export function Footer() {
               <h3 className="text-sm font-semibold">{group.title}</h3>
               <ul className="mt-3 space-y-2.5">
                 {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                    >
-                      {link.label}
-                    </Link>
+                  <li key={link.label}>
+                    {"external" in link && link.external ? (
+                      <a
+                        href={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href as never}
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -68,7 +81,7 @@ export function Footer() {
         </div>
         <div className="mt-10 border-t border-border pt-6">
           <p className="text-center text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} AI In Action. All rights reserved.
+            {t("copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

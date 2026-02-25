@@ -1,27 +1,15 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
-export default function NotFound() {
+export default function GlobalNotFound() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-4 py-20">
-      <div className="text-center">
-        <p className="font-mono text-7xl font-bold text-muted-foreground/30">
-          404
-        </p>
-        <h1 className="mt-4 text-2xl font-bold tracking-tight">
-          Page not found
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        </p>
-        <Button variant="outline" className="mt-6 gap-2" asChild>
-          <Link href="/">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
-      </div>
-    </div>
+    <html lang="en">
+      <body style={{ fontFamily: "system-ui", margin: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+          <p style={{ fontSize: "4rem", fontWeight: "bold", color: "#999", margin: 0 }}>404</p>
+          <h1 style={{ marginTop: "1rem", fontSize: "1.5rem" }}>Page not found</h1>
+          <Link href="/" style={{ marginTop: "1rem", color: "#0ea5e9" }}>Back to Home</Link>
+        </div>
+      </body>
+    </html>
   );
 }

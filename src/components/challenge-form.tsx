@@ -5,6 +5,7 @@ import { Plus, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createChallenge, updateChallenge } from "@/actions/challenges";
+import { useTranslations } from "next-intl";
 
 type Category = {
   id: string;
@@ -32,6 +33,8 @@ type Props = {
 
 export function ChallengeForm({ categories, defaultValues, challengeId }: Props) {
   const isEdit = !!challengeId;
+  const t = useTranslations("challengeForm");
+  const td = useTranslations("difficulty");
 
   const [objectives, setObjectives] = useState<string[]>(
     defaultValues?.objectives.length ? defaultValues.objectives : [""]
@@ -64,21 +67,21 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium mb-1.5">
-          Title *
+          {t("titleLabel")} {t("required")}
         </label>
         <Input
           id="title"
           name="title"
           required
           defaultValue={defaultValues?.title}
-          placeholder="e.g., Build a Real-time Chat App"
+          placeholder={t("titlePlaceholder")}
         />
       </div>
 
       {/* Description */}
       <div>
         <label htmlFor="description" className="block text-sm font-medium mb-1.5">
-          Description *
+          {t("descriptionLabel")} {t("required")}
         </label>
         <textarea
           id="description"
@@ -86,7 +89,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
           required
           rows={4}
           defaultValue={defaultValues?.description}
-          placeholder="Describe the challenge in detail..."
+          placeholder={t("descriptionPlaceholder")}
           className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
         />
       </div>
@@ -95,7 +98,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="difficulty" className="block text-sm font-medium mb-1.5">
-            Difficulty *
+            {t("difficultyLabel")} {t("required")}
           </label>
           <select
             id="difficulty"
@@ -104,17 +107,17 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
             defaultValue={defaultValues?.difficulty || ""}
             className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
-            <option value="" disabled>Select difficulty</option>
-            <option value="BEGINNER">Beginner</option>
-            <option value="INTERMEDIATE">Intermediate</option>
-            <option value="ADVANCED">Advanced</option>
-            <option value="EXPERT">Expert</option>
+            <option value="" disabled>{t("selectDifficulty")}</option>
+            <option value="BEGINNER">{td("BEGINNER")}</option>
+            <option value="INTERMEDIATE">{td("INTERMEDIATE")}</option>
+            <option value="ADVANCED">{td("ADVANCED")}</option>
+            <option value="EXPERT">{td("EXPERT")}</option>
           </select>
         </div>
 
         <div>
           <label htmlFor="categoryId" className="block text-sm font-medium mb-1.5">
-            Category
+            {t("categoryLabel")}
           </label>
           <select
             id="categoryId"
@@ -122,7 +125,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
             defaultValue={defaultValues?.categoryId || ""}
             className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
-            <option value="">No category</option>
+            <option value="">{t("noCategory")}</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -135,35 +138,36 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
       {/* Tags */}
       <div>
         <label htmlFor="tags" className="block text-sm font-medium mb-1.5">
-          Tags (comma-separated)
+          {t("tagsLabel")}
         </label>
         <Input
           id="tags"
           name="tags"
           defaultValue={defaultValues?.tags.join(", ")}
-          placeholder="e.g., react, websocket, real-time"
+          placeholder={t("tagsPlaceholder")}
         />
       </div>
 
       {/* Estimated Time */}
       <div>
         <label htmlFor="estimatedTime" className="block text-sm font-medium mb-1.5">
-          Estimated Time
+          {t("estimatedTimeLabel")}
         </label>
         <Input
           id="estimatedTime"
           name="estimatedTime"
           defaultValue={defaultValues?.estimatedTime || ""}
-          placeholder="e.g., 4-6 hours"
+          placeholder={t("estimatedTimePlaceholder")}
         />
       </div>
 
       {/* Objectives */}
       <DynamicList
-        label="Objectives"
+        label={t("objectivesLabel")}
+        addLabel={t("addObjective")}
         name="objectives"
         items={objectives}
-        placeholder="e.g., Implement user authentication"
+        placeholder={t("objectivesPlaceholder")}
         onAdd={() => addItem(setObjectives)}
         onRemove={(i) => removeItem(setObjectives, i)}
         onChange={(i, v) => updateItem(setObjectives, i, v)}
@@ -171,10 +175,11 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
 
       {/* Hints */}
       <DynamicList
-        label="Hints"
+        label={t("hintsLabel")}
+        addLabel={t("addHint")}
         name="hints"
         items={hints}
-        placeholder="e.g., Consider using WebSocket for real-time updates"
+        placeholder={t("hintsPlaceholder")}
         onAdd={() => addItem(setHints)}
         onRemove={(i) => removeItem(setHints, i)}
         onChange={(i, v) => updateItem(setHints, i, v)}
@@ -182,10 +187,11 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
 
       {/* Resources */}
       <DynamicList
-        label="Resources (URLs)"
+        label={t("resourcesLabel")}
+        addLabel={t("addResource")}
         name="resources"
         items={resources}
-        placeholder="e.g., https://developer.mozilla.org/..."
+        placeholder={t("resourcesPlaceholder")}
         onAdd={() => addItem(setResources)}
         onRemove={(i) => removeItem(setResources, i)}
         onChange={(i, v) => updateItem(setResources, i, v)}
@@ -194,7 +200,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
       {/* Submit */}
       <div className="flex justify-end pt-4">
         <Button type="submit" size="lg">
-          {isEdit ? "Update Challenge" : "Create Challenge"}
+          {isEdit ? t("updateButton") : t("createButton")}
         </Button>
       </div>
     </form>
@@ -203,6 +209,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
 
 function DynamicList({
   label,
+  addLabel,
   name,
   items,
   placeholder,
@@ -211,6 +218,7 @@ function DynamicList({
   onChange,
 }: {
   label: string;
+  addLabel: string;
   name: string;
   items: string[];
   placeholder: string;
@@ -252,7 +260,7 @@ function DynamicList({
         className="mt-2 gap-1"
       >
         <Plus className="h-3.5 w-3.5" />
-        Add {label.replace(/ \(.*/, "").toLowerCase()}
+        {addLabel}
       </Button>
     </div>
   );

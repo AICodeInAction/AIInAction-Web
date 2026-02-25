@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,18 +15,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const navLinks = [
-  { href: "/challenges", label: "Challenges" },
-  { href: "/paths", label: "Learning Paths" },
-  { href: "/showcase", label: "Showcase" },
-];
+import { HeaderXPBadge } from "@/components/gamification/header-xp-badge";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export function Header() {
+  const t = useTranslations("nav");
+  const tc = useTranslations("common");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navLinks = [
+    { href: "/challenges" as const, label: t("challenges") },
+    { href: "/paths" as const, label: t("paths") },
+    { href: "/showcase" as const, label: t("showcase") },
+    { href: "/leaderboard" as const, label: t("leaderboard") },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
@@ -45,7 +51,7 @@ export function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
-            const isActive = pathname.startsWith(link.href);
+            const isActive = pathname.includes(link.href);
             return (
               <Link
                 key={link.href}
@@ -76,10 +82,12 @@ export function Header() {
             >
               <Link href="/challenges/new">
                 <Plus className="h-3.5 w-3.5" />
-                Create
+                {tc("create")}
               </Link>
             </Button>
           )}
+
+          <LanguageSwitcher />
 
           <Button
             variant="ghost"
@@ -90,6 +98,10 @@ export function Header() {
             <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </Button>
+
+          {session?.user?.id && (
+            <HeaderXPBadge userId={session.user.id} />
+          )}
 
           {session?.user ? (
             <DropdownMenu>
@@ -111,11 +123,11 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
-                  <Link href={`/profile/${session.user.id}`}>Profile</Link>
+                  <Link href={`/profile/${session.user.id}` as never}>Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
-                  Sign out
+                  {tc("signOut")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -126,7 +138,7 @@ export function Header() {
               className="gap-2"
             >
               <Github className="h-4 w-4" />
-              <span className="hidden sm:inline">Sign in</span>
+              <span className="hidden sm:inline">{tc("signIn")}</span>
             </Button>
           )}
 
@@ -162,7 +174,7 @@ export function Header() {
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                    pathname.startsWith(link.href)
+                    pathname.includes(link.href)
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
