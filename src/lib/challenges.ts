@@ -148,4 +148,29 @@ export async function getStats() {
   return { challengeCount, categoryCount, userCount, projectCount };
 }
 
+export async function getPublicReflections(challengeId: string) {
+  return prisma.challengeCompletion.findMany({
+    where: {
+      challengeId,
+      status: "COMPLETED",
+      reflection: { not: null },
+      isPublic: true,
+    },
+    select: {
+      id: true,
+      reflection: true,
+      completedAt: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
+    },
+    orderBy: { completedAt: "desc" },
+    take: 20,
+  });
+}
+
 export { difficultyConfig } from "./constants";
