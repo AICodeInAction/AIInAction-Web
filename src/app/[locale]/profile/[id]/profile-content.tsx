@@ -7,6 +7,8 @@ import {
   Trophy,
   Code2,
   Pencil,
+  Lock,
+  Globe,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -69,22 +71,44 @@ type AchievementData = {
   unlockedAt: string | null;
 };
 
+type CompletionData = {
+  id: string;
+  reflection: string | null;
+  isPublic: boolean;
+  completedAt: string | null;
+  challenge: {
+    id: string;
+    slug: string;
+    title: string;
+    difficulty: keyof typeof difficultyConfig;
+    category: { name: string } | null;
+  };
+};
+
 export function ProfileContent({
   user,
   publishedChallenges,
   stats,
   achievements,
   heatmapData,
+  completions,
 }: {
   user: User;
   publishedChallenges: PublishedChallenge[];
   stats: StatsData;
   achievements: AchievementData[];
   heatmapData: Record<string, number>;
+  completions: CompletionData[];
 }) {
   const { data: session } = useSession();
   const isOwnProfile = session?.user?.id === user.id;
   const t = useTranslations("profile");
+
+  // Filter reflections for non-own profiles
+  const visibleCompletions = completions.map((c) => ({
+    ...c,
+    reflection: (isOwnProfile || c.isPublic) ? c.reflection : null,
+  }));
   const tc = useTranslations("common");
 
   const displayName = user.name || t("aiBuilder");
@@ -222,18 +246,68 @@ export function ProfileContent({
         </TabsContent>
 
         <TabsContent value="completed" className="mt-6">
-          <div className="rounded-xl border border-border/40 bg-card/30 p-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              {user._count.completions === 0
-                ? t("noCompletions")
-                : t("completionCount", { count: user._count.completions })}
-            </p>
-            {user._count.completions === 0 && (
+          {visibleCompletions.length > 0 ? (
+            <div className="space-y-3">
+              {visibleCompletions.map((completion) => {
+                const diff = difficultyConfig[completion.challenge.difficulty];
+                return (
+                  <div
+                    key={completion.id}
+                    className="rounded-lg border border-border/40 bg-card/30 p-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <Link
+                        href={`/challenges/${completion.challenge.slug}`}
+                        className="font-medium text-sm hover:text-primary transition-colors"
+                      >
+                        {completion.challenge.title}
+                      </Link>
+                      <div className="flex items-center gap-2">
+                        {completion.challenge.category && (
+                          <Badge variant="secondary" className="text-[10px]">
+                            {completion.challenge.category.name}
+                          </Badge>
+                        )}
+                        <Badge variant="outline" className={`text-[10px] ${diff.className}`}>
+                          {diff.label}
+                        </Badge>
+                      </div>
+                    </div>
+                    {completion.completedAt && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {new Date(completion.completedAt).toLocaleDateString()}
+                      </p>
+                    )}
+                    {completion.reflection && (
+                      <div className="mt-2">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {completion.reflection}
+                        </p>
+                        {isOwnProfile && (
+                          <span className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                            {completion.isPublic ? (
+                              <><Globe className="h-3 w-3" /> Public</>
+                            ) : (
+                              <><Lock className="h-3 w-3" /> Private</>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-border/40 bg-card/30 p-8 text-center">
+              <p className="text-sm text-muted-foreground">
+                {t("noCompletions")}
+              </p>
               <Button variant="outline" size="sm" className="mt-4" asChild>
                 <Link href="/challenges">{t("browseChallenges")}</Link>
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="published" className="mt-6">

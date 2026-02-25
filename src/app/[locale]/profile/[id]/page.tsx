@@ -48,11 +48,30 @@ export default async function ProfilePage({ params }: Props) {
 
   if (!user) notFound();
 
-  const [publishedChallenges, stats, achievements, heatmapData] = await Promise.all([
+  const [publishedChallenges, stats, achievements, heatmapData, completions] = await Promise.all([
     getUserChallenges(id),
     getUserStats(id),
     getUserAchievements(id),
     getCompletionHeatmap(id),
+    prisma.challengeCompletion.findMany({
+      where: { userId: user.id, status: "COMPLETED" },
+      select: {
+        id: true,
+        reflection: true,
+        isPublic: true,
+        completedAt: true,
+        challenge: {
+          select: {
+            id: true,
+            slug: true,
+            title: true,
+            difficulty: true,
+            category: { select: { name: true } },
+          },
+        },
+      },
+      orderBy: { completedAt: "desc" },
+    }),
   ]);
 
   return (
@@ -63,6 +82,7 @@ export default async function ProfilePage({ params }: Props) {
         stats={JSON.parse(JSON.stringify(stats))}
         achievements={JSON.parse(JSON.stringify(achievements))}
         heatmapData={heatmapData}
+        completions={JSON.parse(JSON.stringify(completions))}
       />
     </div>
   );
