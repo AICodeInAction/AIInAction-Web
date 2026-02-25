@@ -214,7 +214,16 @@
     "completionsInYear": "{year} 年 {count} 次完成",
     "less": "少",
     "more": "多",
-    "completion": "{count, plural, =1 {# 次完成} other {# 次完成}}"
+    "completion": "{count, plural, =1 {# 次完成} other {# 次完成}}",
+    "reflectionPlaceholder": "分享你的方法、使用的工具或心得感悟...",
+    "sharePublicly": "公开分享",
+    "submitReflection": "提交",
+    "skipReflection": "跳过"
+  },
+  "reflections": {
+    "title": "完成心得",
+    "noReflections": "暂无心得。完成此挑战并分享你的经验！",
+    "completedOn": "完成于 {date}"
   },
   "achievements": {
     "first-step": {

@@ -214,7 +214,16 @@
     "completionsInYear": "{count} completions in {year}",
     "less": "Less",
     "more": "More",
-    "completion": "{count, plural, =1 {# completion} other {# completions}}"
+    "completion": "{count, plural, =1 {# completion} other {# completions}}",
+    "reflectionPlaceholder": "Share your approach, tools used, or lessons learned...",
+    "sharePublicly": "Share publicly",
+    "submitReflection": "Submit",
+    "skipReflection": "Skip"
+  },
+  "reflections": {
+    "title": "Reflections",
+    "noReflections": "No reflections yet. Complete this challenge and share your experience!",
+    "completedOn": "Completed on {date}"
   },
   "achievements": {
     "first-step": {
