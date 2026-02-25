@@ -106,3 +106,32 @@ export async function markComplete(
     newAchievements,
   };
 }
+
+export async function saveReflection(
+  challengeId: string,
+  reflection: string,
+  isPublic: boolean
+) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const userId = session.user.id;
+
+  const completion = await prisma.challengeCompletion.findUnique({
+    where: { userId_challengeId: { userId, challengeId } },
+    include: { challenge: { select: { slug: true } } },
+  });
+
+  if (!completion || completion.status !== "COMPLETED") {
+    throw new Error("Challenge not completed");
+  }
+
+  await prisma.challengeCompletion.update({
+    where: { userId_challengeId: { userId, challengeId } },
+    data: { reflection, isPublic },
+  });
+
+  if (completion.challenge) {
+    revalidatePath(`/challenges/${completion.challenge.slug}`);
+  }
+}
