@@ -20,7 +20,8 @@
     "db:push": "prisma db push",
     "db:seed": "pnpm tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "db:migrate-translations": "pnpm tsx scripts/migrate-translations.ts"
+    "db:migrate-translations": "pnpm tsx scripts/migrate-translations.ts",
+    "challenge:generate": "pnpm tsx scripts/generate-challenge.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
