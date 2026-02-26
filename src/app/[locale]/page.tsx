@@ -13,7 +13,7 @@ export default async function HomePage({ params }: Props) {
   const [stats, categories, { challenges: featured }] = await Promise.all([
     getStats(),
     getCategories(),
-    getChallenges({ pageSize: 6 }),
+    getChallenges({ pageSize: 6 }, locale),
   ]);
 
   return (

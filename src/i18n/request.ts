@@ -11,15 +11,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   const ui = (await import(`../../messages/${locale}.json`)).default;
 
-  let content = {};
-  try {
-    content = (await import(`../../messages/${locale}-content.json`)).default;
-  } catch {
-    // content file is optional
-  }
-
   return {
     locale,
-    messages: { ...ui, ...content },
+    messages: ui,
   };
 });

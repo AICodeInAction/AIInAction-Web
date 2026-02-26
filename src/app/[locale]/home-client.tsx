@@ -123,7 +123,6 @@ export function HomeClient({
   const t = useTranslations("home");
   const tc = useTranslations("common");
   const tCat = useTranslations("categories");
-  const tContent = useTranslations("challengeContent");
   const td = useTranslations("difficulty");
 
   const statItems = [
@@ -432,7 +431,7 @@ export function HomeClient({
                           </Badge>
                         </div>
                         <h3 className="mt-3 font-semibold transition-colors group-hover:text-primary">
-                          {c.isOfficial && tContent.has(`${c.slug}.title`) ? tContent(`${c.slug}.title`) : c.title}
+                          {c.title}
                         </h3>
                         <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
                           {c.category && <span>{c.category.name}</span>}
