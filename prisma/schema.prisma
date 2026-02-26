@@ -149,11 +149,26 @@ model Challenge {
   projects      SharedProject[]
   likes         ChallengeLike[]
   comments      ChallengeComment[]
+  translations  ChallengeTranslation[]
 
   createdAt     DateTime   @default(now()) @map("created_at")
   updatedAt     DateTime   @updatedAt @map("updated_at")
 
   @@map("challenges")
+}
+
+model ChallengeTranslation {
+  id          String    @id @default(cuid())
+  challengeId String    @map("challenge_id")
+  locale      String
+  title       String
+  description String    @db.Text
+  objectives  String[]
+  hints       String[]
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, locale])
+  @@map("challenge_translations")
 }
 
 model ChallengeCompletion {

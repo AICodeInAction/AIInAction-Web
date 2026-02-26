@@ -322,14 +322,11 @@ function generatePageNumbers(current: number, total: number): (number | "...")[]
 function ChallengeCard({ challenge }: { challenge: SerializedChallenge }) {
   const diff = difficultyConfig[challenge.difficulty];
   const tc = useTranslations("common");
-  const tContent = useTranslations("challengeContent");
   const tCat = useTranslations("categories");
   const td = useTranslations("difficulty");
 
-  const cardTitle = challenge.isOfficial && tContent.has(`${challenge.slug}.title`)
-    ? tContent(`${challenge.slug}.title`) : challenge.title;
-  const cardDesc = challenge.isOfficial && tContent.has(`${challenge.slug}.description`)
-    ? tContent(`${challenge.slug}.description`) : challenge.description;
+  const cardTitle = challenge.title;
+  const cardDesc = challenge.description;
   const catName = challenge.category && tCat.has(`${challenge.category.slug}.name`)
     ? tCat(`${challenge.category.slug}.name`) : challenge.category?.name;
   const diffLabel = td.has(challenge.difficulty) ? td(challenge.difficulty) : diff.label;

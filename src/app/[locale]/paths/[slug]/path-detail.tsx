@@ -63,7 +63,6 @@ export function PathDetail({
 }) {
   const t = useTranslations("paths");
   const tPath = useTranslations("pathContent");
-  const tContent = useTranslations("challengeContent");
   const Icon = iconMap[path.icon];
 
   const pathTitle = tPath.has(`${path.slug}.title`) ? tPath(`${path.slug}.title`) : path.title;
@@ -153,10 +152,10 @@ export function PathDetail({
                         </span>
                         <div className="flex-1 min-w-0">
                           <h3 className="font-medium text-sm group-hover:text-primary transition-colors truncate">
-                            {tContent.has(`${challenge.slug}.title`) ? tContent(`${challenge.slug}.title`) : challenge.title}
+                            {challenge.title}
                           </h3>
                           <p className="mt-0.5 text-xs text-muted-foreground truncate">
-                            {tContent.has(`${challenge.slug}.description`) ? tContent(`${challenge.slug}.description`) : challenge.description}
+                            {challenge.description}
                           </p>
                         </div>
                         {challenge.estimatedTime && (

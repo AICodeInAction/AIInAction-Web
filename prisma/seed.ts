@@ -129,6 +129,27 @@ async function main() {
         data: { challengeId: upserted.id, tagId: tag.id },
       });
     }
+
+    // Upsert English translation from seed data
+    await prisma.challengeTranslation.upsert({
+      where: {
+        challengeId_locale: { challengeId: upserted.id, locale: "en" },
+      },
+      update: {
+        title: challenge.title,
+        description: challenge.description,
+        objectives: challenge.objectives,
+        hints: challenge.hints,
+      },
+      create: {
+        challengeId: upserted.id,
+        locale: "en",
+        title: challenge.title,
+        description: challenge.description,
+        objectives: challenge.objectives,
+        hints: challenge.hints,
+      },
+    });
   }
 
   console.log(`  Seeded ${challenges.length} challenges.`);

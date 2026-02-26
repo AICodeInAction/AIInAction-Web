@@ -40,26 +40,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const challenge = await getChallengeBySlug(slug);
+  const challenge = await getChallengeBySlug(slug, locale);
   if (!challenge) {
     const t = await getTranslations({ locale, namespace: "metadata" });
     return { title: t("challengeNotFound") };
   }
-  const tContent = await getTranslations({ locale, namespace: "challengeContent" });
-  const metaTitle = challenge.isOfficial && tContent.has(`${slug}.title`)
-    ? tContent(`${slug}.title`) : challenge.title;
-  const metaDesc = challenge.isOfficial && tContent.has(`${slug}.description`)
-    ? tContent(`${slug}.description`) : challenge.description;
   return {
-    title: metaTitle,
-    description: metaDesc,
+    title: challenge.title,
+    description: challenge.description,
   };
 }
 
 export default async function ChallengeDetailPage({ params }: Props) {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const challenge = await getChallengeBySlug(slug);
+  const challenge = await getChallengeBySlug(slug, locale);
   if (!challenge) notFound();
 
   const diff = difficultyConfig[challenge.difficulty];
@@ -70,26 +65,20 @@ export default async function ChallengeDetailPage({ params }: Props) {
   const t = await getTranslations("challenge");
   const tc = await getTranslations("common");
   const tnav = await getTranslations("nav");
-  const tContent = await getTranslations("challengeContent");
   const tCat = await getTranslations("categories");
   const td = await getTranslations("difficulty");
 
-  // Use translated content for official challenges
-  const title = challenge.isOfficial && tContent.has(`${challenge.slug}.title`)
-    ? tContent(`${challenge.slug}.title`) : challenge.title;
-  const description = challenge.isOfficial && tContent.has(`${challenge.slug}.description`)
-    ? tContent(`${challenge.slug}.description`) : challenge.description;
-  const objectives: string[] = challenge.isOfficial && tContent.has(`${challenge.slug}.objectives`)
-    ? (tContent.raw(`${challenge.slug}.objectives`) as string[]) : challenge.objectives;
-  const hints: string[] = challenge.isOfficial && tContent.has(`${challenge.slug}.hints`)
-    ? (tContent.raw(`${challenge.slug}.hints`) as string[]) : challenge.hints;
+  const title = challenge.title;
+  const description = challenge.description;
+  const objectives = challenge.objectives;
+  const hints = challenge.hints;
   const categoryName = challenge.category && tCat.has(`${challenge.category.slug}.name`)
     ? tCat(`${challenge.category.slug}.name`) : challenge.category?.name;
   const diffLabel = td.has(challenge.difficulty) ? td(challenge.difficulty) : diff.label;
 
   const [pathChallenges, { comments, total: commentTotal }, liked, completed, reflections] =
     await Promise.all([
-      challenge.path ? getChallengesByPath(challenge.path.slug) : Promise.resolve([]),
+      challenge.path ? getChallengesByPath(challenge.path.slug, locale) : Promise.resolve([]),
       getChallengeComments(challenge.id),
       userId ? hasUserLiked(userId, challenge.id) : Promise.resolve(false),
       userId ? hasUserCompleted(userId, challenge.id) : Promise.resolve(false),
@@ -315,7 +304,7 @@ export default async function ChallengeDetailPage({ params }: Props) {
               <Link href={`/challenges/${prevChallenge.slug}`}>
                 <Button variant="ghost" size="sm" className="gap-2">
                   <ArrowLeft className="h-4 w-4" />
-                  {tContent.has(`${prevChallenge.slug}.title`) ? tContent(`${prevChallenge.slug}.title`) : prevChallenge.title}
+                  {prevChallenge.title}
                 </Button>
               </Link>
             ) : (
@@ -324,7 +313,7 @@ export default async function ChallengeDetailPage({ params }: Props) {
             {nextChallenge ? (
               <Link href={`/challenges/${nextChallenge.slug}`}>
                 <Button variant="ghost" size="sm" className="gap-2">
-                  {tContent.has(`${nextChallenge.slug}.title`) ? tContent(`${nextChallenge.slug}.title`) : nextChallenge.title}
+                  {nextChallenge.title}
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </Link>

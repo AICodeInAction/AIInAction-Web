@@ -41,7 +41,7 @@ export default async function ChallengesPage({ params, searchParams }: Props) {
     search: sp.search,
     official,
     page: sp.page ? parseInt(sp.page) : 1,
-  });
+  }, locale);
 
   return (
     <ChallengeListClient

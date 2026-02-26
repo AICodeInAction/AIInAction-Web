@@ -26,7 +26,7 @@ export default async function PathDetailPage({ params }: Props) {
   const path = await getPathBySlug(slug);
   if (!path) notFound();
 
-  const challenges = await getChallengesByPath(slug);
+  const challenges = await getChallengesByPath(slug, locale);
 
   return (
     <PathDetail

@@ -1,5 +1,28 @@
 import { prisma } from "./prisma";
-import type { Difficulty, Prisma } from "@prisma/client";
+import type { Difficulty, Prisma, ChallengeTranslation } from "@prisma/client";
+
+function applyTranslation<T extends { translations?: ChallengeTranslation[] }>(
+  challenge: T,
+  locale?: string,
+): T {
+  if (!locale || !challenge.translations?.length) return challenge;
+  const t = challenge.translations.find((tr) => tr.locale === locale);
+  if (!t) return challenge;
+  return {
+    ...challenge,
+    title: t.title,
+    description: t.description,
+    objectives: t.objectives,
+    hints: t.hints,
+  };
+}
+
+function applyTranslations<T extends { translations?: ChallengeTranslation[] }>(
+  challenges: T[],
+  locale?: string,
+): T[] {
+  return challenges.map((c) => applyTranslation(c, locale));
+}
 
 export type ChallengeFilters = {
   categorySlug?: string;
@@ -11,7 +34,7 @@ export type ChallengeFilters = {
   pageSize?: number;
 };
 
-export async function getChallenges(filters: ChallengeFilters = {}) {
+export async function getChallenges(filters: ChallengeFilters = {}, locale?: string) {
   const { categorySlug, difficulty, tag, search, official, page = 1, pageSize = 30 } = filters;
 
   const where: Prisma.ChallengeWhereInput = {};
@@ -42,6 +65,7 @@ export async function getChallenges(filters: ChallengeFilters = {}) {
         category: true,
         tags: { include: { tag: true } },
         author: { select: { id: true, name: true, image: true } },
+        translations: true,
       },
       orderBy: [{ isOfficial: "desc" }, { likesCount: "desc" }, { createdAt: "desc" }],
       skip: (page - 1) * pageSize,
@@ -50,11 +74,11 @@ export async function getChallenges(filters: ChallengeFilters = {}) {
     prisma.challenge.count({ where }),
   ]);
 
-  return { challenges, total, page, pageSize };
+  return { challenges: applyTranslations(challenges, locale), total, page, pageSize };
 }
 
-export async function getChallengeBySlug(slug: string) {
-  return prisma.challenge.findUnique({
+export async function getChallengeBySlug(slug: string, locale?: string) {
+  const challenge = await prisma.challenge.findUnique({
     where: { slug },
     include: {
       category: true,
@@ -62,9 +86,11 @@ export async function getChallengeBySlug(slug: string) {
       author: { select: { id: true, name: true, image: true, githubUrl: true } },
       forkedFrom: { select: { id: true, slug: true, title: true } },
       path: true,
+      translations: true,
       _count: { select: { forks: true, comments: true } },
     },
   });
+  return challenge ? applyTranslation(challenge, locale) : null;
 }
 
 export async function getChallengeComments(challengeId: string, page = 1, pageSize = 20) {
@@ -81,15 +107,17 @@ export async function getChallengeComments(challengeId: string, page = 1, pageSi
   return { comments, total, page, pageSize };
 }
 
-export async function getChallengesByPath(pathSlug: string) {
-  return prisma.challenge.findMany({
+export async function getChallengesByPath(pathSlug: string, locale?: string) {
+  const challenges = await prisma.challenge.findMany({
     where: { path: { slug: pathSlug } },
     include: {
       category: true,
       tags: { include: { tag: true } },
+      translations: true,
     },
     orderBy: { order: "asc" },
   });
+  return applyTranslations(challenges, locale);
 }
 
 export async function getAllPaths() {
@@ -120,15 +148,17 @@ export async function getPopularTags(limit = 20) {
   return tags.map((t) => ({ name: t.name, count: t._count.challenges }));
 }
 
-export async function getUserChallenges(userId: string) {
-  return prisma.challenge.findMany({
+export async function getUserChallenges(userId: string, locale?: string) {
+  const challenges = await prisma.challenge.findMany({
     where: { authorId: userId },
     include: {
       category: true,
       tags: { include: { tag: true } },
+      translations: true,
     },
     orderBy: { createdAt: "desc" },
   });
+  return applyTranslations(challenges, locale);
 }
 
 export async function hasUserLiked(userId: string, challengeId: string) {
