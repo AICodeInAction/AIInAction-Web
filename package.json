@@ -23,6 +23,7 @@
     "db:migrate-translations": "pnpm tsx scripts/migrate-translations.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@auth/prisma-adapter": "^2.11.1",
     "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.4.1",
