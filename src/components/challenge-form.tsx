@@ -5,7 +5,7 @@ import { Plus, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createChallenge, updateChallenge } from "@/actions/challenges";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 type Category = {
   id: string;
@@ -33,6 +33,7 @@ type Props = {
 
 export function ChallengeForm({ categories, defaultValues, challengeId }: Props) {
   const isEdit = !!challengeId;
+  const locale = useLocale();
   const t = useTranslations("challengeForm");
   const td = useTranslations("difficulty");
 
@@ -64,6 +65,7 @@ export function ChallengeForm({ categories, defaultValues, challengeId }: Props)
 
   return (
     <form action={handleAction} className="space-y-6">
+      <input type="hidden" name="locale" value={locale} />
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium mb-1.5">

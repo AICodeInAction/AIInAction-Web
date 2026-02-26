@@ -1,7 +1,6 @@
 import { prisma } from "./prisma";
 import type { Difficulty, Prisma, ChallengeTranslation } from "@prisma/client";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function applyTranslation<T extends { translations?: ChallengeTranslation[] }>(
   challenge: T,
   locale?: string,

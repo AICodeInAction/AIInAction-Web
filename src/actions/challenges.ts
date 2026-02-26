@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { awardXP } from "@/lib/gamification";
 import { checkAndAwardAchievements } from "@/lib/achievements";
+import { translateChallenge, type ChallengeContent } from "@/lib/ai";
 
 function slugify(text: string): string {
   return text
@@ -53,9 +54,13 @@ export async function createChallenge(formData: FormData) {
   const hints = formData.getAll("hints") as string[];
   const resources = formData.getAll("resources") as string[];
   const estimatedTime = (formData.get("estimatedTime") as string) || null;
+  const locale = (formData.get("locale") as string) || "en";
 
   const slug = await generateUniqueSlug(title);
   const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : [];
+
+  const filteredObjectives = objectives.filter(Boolean);
+  const filteredHints = hints.filter(Boolean);
 
   const challenge = await prisma.challenge.create({
     data: {
@@ -66,14 +71,37 @@ export async function createChallenge(formData: FormData) {
       categoryId: categoryId || null,
       authorId: session.user.id,
       isOfficial: false,
-      objectives: objectives.filter(Boolean),
-      hints: hints.filter(Boolean),
+      objectives: filteredObjectives,
+      hints: filteredHints,
       resources: resources.filter(Boolean),
       estimatedTime,
     },
   });
 
   await syncTags(challenge.id, tags);
+
+  // Create translation for current locale
+  const content: ChallengeContent = {
+    title,
+    description,
+    objectives: filteredObjectives,
+    hints: filteredHints,
+  };
+
+  await prisma.challengeTranslation.create({
+    data: { challengeId: challenge.id, locale, ...content },
+  });
+
+  // Auto-translate to the other locale
+  const otherLocale = locale === "zh" ? "en" : "zh";
+  try {
+    const translated = await translateChallenge(content, locale, otherLocale);
+    await prisma.challengeTranslation.create({
+      data: { challengeId: challenge.id, locale: otherLocale, ...translated },
+    });
+  } catch {
+    // Graceful degradation — translation will be missing for other locale
+  }
 
   // Award XP for publishing a community challenge
   await awardXP(session.user.id, 20);
@@ -101,7 +129,10 @@ export async function updateChallenge(challengeId: string, formData: FormData) {
   const hints = formData.getAll("hints") as string[];
   const resources = formData.getAll("resources") as string[];
   const estimatedTime = (formData.get("estimatedTime") as string) || null;
+  const locale = (formData.get("locale") as string) || "en";
 
+  const filteredObjectives = objectives.filter(Boolean);
+  const filteredHints = hints.filter(Boolean);
   const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : [];
 
   await prisma.challenge.update({
@@ -111,14 +142,41 @@ export async function updateChallenge(challengeId: string, formData: FormData) {
       description,
       difficulty: difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT",
       categoryId: categoryId || null,
-      objectives: objectives.filter(Boolean),
-      hints: hints.filter(Boolean),
+      objectives: filteredObjectives,
+      hints: filteredHints,
       resources: resources.filter(Boolean),
       estimatedTime,
     },
   });
 
   await syncTags(challengeId, tags);
+
+  // Upsert translation for current locale
+  const content: ChallengeContent = {
+    title,
+    description,
+    objectives: filteredObjectives,
+    hints: filteredHints,
+  };
+
+  await prisma.challengeTranslation.upsert({
+    where: { challengeId_locale: { challengeId, locale } },
+    update: content,
+    create: { challengeId, locale, ...content },
+  });
+
+  // Auto-translate to the other locale
+  const otherLocale = locale === "zh" ? "en" : "zh";
+  try {
+    const translated = await translateChallenge(content, locale, otherLocale);
+    await prisma.challengeTranslation.upsert({
+      where: { challengeId_locale: { challengeId, locale: otherLocale } },
+      update: translated,
+      create: { challengeId, locale: otherLocale, ...translated },
+    });
+  } catch {
+    // Graceful degradation
+  }
 
   revalidatePath(`/challenges/${existing.slug}`);
   redirect(`/challenges/${existing.slug}`);
@@ -145,7 +203,7 @@ export async function forkChallenge(originalSlug: string) {
 
   const original = await prisma.challenge.findUnique({
     where: { slug: originalSlug },
-    include: { tags: { include: { tag: true } } },
+    include: { tags: { include: { tag: true } }, translations: true },
   });
   if (!original) throw new Error("Challenge not found");
 
@@ -170,6 +228,20 @@ export async function forkChallenge(originalSlug: string) {
 
   const tagNames = original.tags.map((ct) => ct.tag.name);
   await syncTags(forked.id, tagNames);
+
+  // Copy translations from original challenge
+  for (const t of original.translations) {
+    await prisma.challengeTranslation.create({
+      data: {
+        challengeId: forked.id,
+        locale: t.locale,
+        title: t.locale === "en" ? `${t.title} (Fork)` : `${t.title}（分叉）`,
+        description: t.description,
+        objectives: t.objectives,
+        hints: t.hints,
+      },
+    });
+  }
 
   revalidatePath("/challenges");
   redirect(`/challenges/${forked.slug}/edit`);
