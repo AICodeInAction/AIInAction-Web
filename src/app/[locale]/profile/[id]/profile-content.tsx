@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import {
   Github,
@@ -9,11 +10,19 @@ import {
   Pencil,
   Lock,
   Globe,
+  Key,
+  Copy,
+  Check,
+  Trash2,
+  Plus,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { difficultyConfig } from "@/lib/constants";
 import { Link } from "@/i18n/navigation";
@@ -23,8 +32,16 @@ import { LevelBadge } from "@/components/gamification/level-badge";
 import { StreakDisplay } from "@/components/gamification/streak-display";
 import { AchievementCard } from "@/components/gamification/achievement-card";
 import { ContributionHeatmap } from "@/components/gamification/contribution-heatmap";
+import { createApiKey, listApiKeys, deleteApiKey } from "@/actions/api-keys";
 import type { AchievementRarity } from "@prisma/client";
 import type { Level } from "@/lib/xp";
+
+type ApiKeyItem = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  lastUsedAt: Date | null;
+};
 
 type User = {
   id: string;
@@ -211,6 +228,12 @@ export function ProfileContent({
           <TabsTrigger value="completed">{t("completedTab")}</TabsTrigger>
           <TabsTrigger value="published">{t("publishedTab")}</TabsTrigger>
           <TabsTrigger value="projects">{t("projectsTab")}</TabsTrigger>
+          {isOwnProfile && (
+            <TabsTrigger value="api-keys">
+              <Key className="mr-1.5 h-3.5 w-3.5" />
+              API Keys
+            </TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="achievements" className="mt-6">
@@ -376,7 +399,213 @@ export function ProfileContent({
             )}
           </div>
         </TabsContent>
+
+        {isOwnProfile && (
+          <TabsContent value="api-keys" className="mt-6">
+            <ApiKeysPanel />
+          </TabsContent>
+        )}
       </Tabs>
+    </div>
+  );
+}
+
+function ApiKeysPanel() {
+  const [keys, setKeys] = useState<ApiKeyItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [newlyCreatedKey, setNewlyCreatedKey] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchKeys = useCallback(async () => {
+    try {
+      const result = await listApiKeys();
+      setKeys(result);
+    } catch {
+      setError("Failed to load API keys");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchKeys();
+  }, [fetchKeys]);
+
+  const handleCreate = async () => {
+    setError(null);
+    setCreating(true);
+    try {
+      const result = await createApiKey(newKeyName.trim());
+      setNewlyCreatedKey(result.key);
+      setNewKeyName("");
+      await fetchKeys();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to create API key");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    setError(null);
+    setDeleting(id);
+    try {
+      await deleteApiKey(id);
+      setKeys((prev) => prev.filter((k) => k.id !== id));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to delete API key");
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const handleCopy = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center rounded-xl border border-border/40 bg-card/30 p-8">
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {error && (
+        <div className="flex items-center gap-2 rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
+      {/* Newly created key banner */}
+      {newlyCreatedKey && (
+        <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4">
+          <div className="flex items-center gap-2 text-sm font-medium text-amber-700 dark:text-amber-400">
+            <AlertTriangle className="h-4 w-4 shrink-0" />
+            Copy your API key now. It will not be shown again.
+          </div>
+          <div className="mt-3 flex items-center gap-2">
+            <code className="flex-1 rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 font-mono text-sm break-all">
+              {newlyCreatedKey}
+            </code>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleCopy(newlyCreatedKey)}
+              className="shrink-0"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-2 text-xs text-muted-foreground"
+            onClick={() => setNewlyCreatedKey(null)}
+          >
+            Dismiss
+          </Button>
+        </div>
+      )}
+
+      {/* Create new key */}
+      <div className="rounded-xl border border-border/40 bg-card/30 p-4">
+        <h3 className="text-sm font-medium">Generate New API Key</h3>
+        <p className="mt-1 text-xs text-muted-foreground">
+          API keys allow AI agents (Claude Code, OpenClaw) to access the platform on your behalf.
+          You can have up to 5 keys.
+        </p>
+        <div className="mt-3 flex items-center gap-2">
+          <Input
+            placeholder="Key name (e.g. My Laptop)"
+            value={newKeyName}
+            onChange={(e) => setNewKeyName(e.target.value)}
+            className="max-w-xs text-sm"
+            disabled={creating || keys.length >= 5}
+          />
+          <Button
+            size="sm"
+            onClick={handleCreate}
+            disabled={creating || keys.length >= 5}
+          >
+            {creating ? (
+              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Plus className="mr-1.5 h-3.5 w-3.5" />
+            )}
+            Generate
+          </Button>
+        </div>
+        {keys.length >= 5 && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Maximum of 5 API keys reached. Delete an existing key to create a new one.
+          </p>
+        )}
+      </div>
+
+      {/* Key list */}
+      {keys.length > 0 ? (
+        <div className="space-y-2">
+          {keys.map((apiKey) => (
+            <div
+              key={apiKey.id}
+              className="flex items-center justify-between rounded-lg border border-border/40 bg-card/30 px-4 py-3"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <Key className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-sm font-medium truncate">
+                    {apiKey.name}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
+                  <span>
+                    Created {new Date(apiKey.createdAt).toLocaleDateString()}
+                  </span>
+                  {apiKey.lastUsedAt && (
+                    <span>
+                      Last used {new Date(apiKey.lastUsedAt).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleDelete(apiKey.id)}
+                disabled={deleting === apiKey.id}
+                className="text-muted-foreground hover:text-destructive"
+              >
+                {deleting === apiKey.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-border/40 bg-card/30 p-8 text-center">
+          <Key className="mx-auto h-8 w-8 text-muted-foreground/50" />
+          <p className="mt-3 text-sm text-muted-foreground">
+            No API keys yet. Generate one to get started.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
