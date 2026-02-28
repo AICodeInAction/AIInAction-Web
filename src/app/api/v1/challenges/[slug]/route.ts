@@ -23,8 +23,22 @@ export async function GET(
   }
 
   return jsonSuccess({
-    ...challenge,
+    id: challenge.id,
+    slug: challenge.slug,
+    title: challenge.title,
+    description: challenge.description,
+    difficulty: challenge.difficulty,
+    objectives: challenge.objectives,
+    hints: challenge.hints,
+    resources: challenge.resources,
+    estimatedTime: challenge.estimatedTime,
+    isOfficial: challenge.isOfficial,
+    likesCount: challenge.likesCount,
+    createdAt: challenge.createdAt,
+    category: challenge.category,
+    author: challenge.author,
     tags: challenge.tags.map((t) => t.tag.name),
+    forkedFrom: challenge.forkedFrom,
   });
 }
 

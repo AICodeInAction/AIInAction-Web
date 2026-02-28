@@ -230,5 +230,4 @@ Common error codes: `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `VALIDATION_ERROR`
 
 ## Rate Limits
 
-- Read operations: 60 requests per minute
-- Write operations: 30 requests per minute
+No rate limits are currently enforced, but please be respectful with request volume. We recommend keeping reads under 60/min and writes under 30/min.

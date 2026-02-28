@@ -8,8 +8,13 @@ export async function GET(request: Request) {
   const limit = Math.min(50, Math.max(1, parseInt(url.searchParams.get("limit") || "20")));
   const search = url.searchParams.get("search") || undefined;
   const category = url.searchParams.get("category") || undefined;
-  const difficulty = url.searchParams.get("difficulty") as Difficulty | undefined;
+  const difficultyParam = url.searchParams.get("difficulty");
   const official = url.searchParams.get("official");
+
+  if (difficultyParam && !["BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"].includes(difficultyParam)) {
+    return jsonError("VALIDATION_ERROR", "difficulty must be one of: BEGINNER, INTERMEDIATE, ADVANCED, EXPERT", 400);
+  }
+  const difficulty = difficultyParam as Difficulty | undefined;
 
   const where: Record<string, unknown> = {};
   if (search) {
