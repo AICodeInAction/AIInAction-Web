@@ -1,6 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
-const client = new Anthropic();
+const proxyUrl = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
+
+const client = new Anthropic({
+  httpAgent: proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined,
+});
 
 export type ChallengeContent = {
   title: string;
