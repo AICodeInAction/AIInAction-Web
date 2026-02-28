@@ -27,6 +27,7 @@ Server Actions in **`src/actions/`** handle all writes:
 - `likes.ts` — toggle challenge likes
 - `comments.ts` — create/delete challenge comments
 - `completions.ts` — mark challenges as complete
+- `api-keys.ts` — generate, list, delete API keys
 
 ### Auth
 
@@ -36,7 +37,7 @@ GitHub OAuth via **NextAuth v5** (`src/lib/auth.ts`). The `auth()` helper is use
 
 PostgreSQL via **Prisma with `@prisma/adapter-pg`** (driver adapter pattern). The singleton client is in `src/lib/prisma.ts`. Schema: `prisma/schema.prisma`. The DB URL is set via `DATABASE_URL` in `.env`.
 
-Key models: `Category`, `Challenge` (with `isOfficial`, `authorId`, `forkedFromId`, `likesCount`), `Tag`/`ChallengeTag`, `ChallengeLike`, `ChallengeComment`, `LearningPath`, `ChallengeCompletion`, `SharedProject`.
+Key models: `Category`, `Challenge` (with `isOfficial`, `authorId`, `forkedFromId`, `likesCount`), `Tag`/`ChallengeTag`, `ChallengeLike`, `ChallengeComment`, `LearningPath`, `ChallengeCompletion`, `SharedProject`, `ApiKey`.
 
 ### Key Environment Variables
 
@@ -46,6 +47,7 @@ AUTH_SECRET       # NextAuth secret (generate with: openssl rand -base64 32)
 GITHUB_ID         # GitHub OAuth app client ID
 GITHUB_SECRET     # GitHub OAuth app client secret
 NEXTAUTH_URL      # Base URL (e.g. http://localhost:3000)
+RESEND_API_KEY    # Resend API key for sending emails
 ```
 
 ### UI
@@ -66,6 +68,12 @@ shadcn/ui components (Radix UI + Tailwind CSS v4) in `src/components/ui/`. Layou
 - `/profile/[id]` — User profile with Completed/Published/Projects tabs
 - `/login` — GitHub OAuth sign-in page
 - `/api/auth/[...nextauth]` — NextAuth route handler
+- `/api/v1/challenges` — REST API: list/create challenges
+- `/api/v1/challenges/[slug]` — REST API: get/update challenge
+- `/api/v1/challenges/[slug]/complete` — REST API: mark challenge complete
+- `/api/v1/categories` — REST API: list categories
+- `/api/v1/me` — REST API: get authenticated user profile
+- `/api/v1/me/keys` — REST API: manage API keys
 
 ### Adding Official Challenges
 
@@ -74,3 +82,11 @@ Add entries to `src/data/challenges.ts` (static `challenges`, `learningPaths`, a
 ### Adding Community Challenges
 
 Users create challenges via `/challenges/new`. They can also fork existing challenges to create variants.
+
+### Agent Skill API
+
+REST API at `/api/v1/` enables AI agents (Claude Code, OpenClaw) to interact with the platform. Authentication uses per-user API keys (prefix `aia_`, stored hashed). The skill definition is at `public/skill.md` (served at `https://aiinaction.top/skill.md`). API key auth middleware lives in `src/lib/api-auth.ts`.
+
+### Welcome Email
+
+New users receive a welcome email via **Resend** (`src/lib/email.ts`). Triggered by NextAuth's `events.createUser` hook. Skips silently if user has no email.
