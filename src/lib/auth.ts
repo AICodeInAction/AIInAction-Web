@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
+import { sendWelcomeEmail } from "./email";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -32,5 +33,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/login",
+  },
+  events: {
+    async createUser({ user }) {
+      if (user.email) {
+        try {
+          await sendWelcomeEmail(user.name || "", user.email);
+        } catch {
+          // Graceful degradation — don't block sign-in if email fails
+        }
+      }
+    },
   },
 });
