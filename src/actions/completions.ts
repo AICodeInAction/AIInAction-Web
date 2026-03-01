@@ -33,6 +33,12 @@ export async function markComplete(
 
   const userId = session.user.id;
 
+  // Check if user is registered
+  const registration = await prisma.challengeRegistration.findUnique({
+    where: { userId_challengeId: { userId, challengeId } },
+  });
+  if (!registration) throw new Error("Must register first");
+
   // Check if already completed
   const existing = await prisma.challengeCompletion.findUnique({
     where: { userId_challengeId: { userId, challengeId } },

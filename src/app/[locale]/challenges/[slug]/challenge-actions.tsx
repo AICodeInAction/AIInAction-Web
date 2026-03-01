@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Github, Share2, CheckCircle, Heart, GitFork, Pencil, Trash2 } from "lucide-react";
+import { Github, Share2, CheckCircle, Heart, GitFork, Pencil, Trash2, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession, signIn } from "next-auth/react";
 import { Link } from "@/i18n/navigation";
 import { toggleLike } from "@/actions/likes";
 import { forkChallenge, deleteChallenge } from "@/actions/challenges";
 import { markComplete, saveReflection, type CompletionResult } from "@/actions/completions";
+import { registerForChallenge } from "@/actions/registrations";
 import { CompletionModal } from "@/components/gamification/completion-modal";
 import { useTranslations } from "next-intl";
 
@@ -17,10 +18,11 @@ type Props = {
   likesCount: number;
   liked: boolean;
   completed: boolean;
+  registered: boolean;
   isAuthor: boolean;
 };
 
-export function ChallengeActions({ challengeId, slug, likesCount, liked, completed, isAuthor }: Props) {
+export function ChallengeActions({ challengeId, slug, likesCount, liked, completed, registered, isAuthor }: Props) {
   const { data: session } = useSession();
   const [isPending, startTransition] = useTransition();
   const [completionResult, setCompletionResult] = useState<CompletionResult | null>(null);
@@ -45,6 +47,10 @@ export function ChallengeActions({ challengeId, slug, likesCount, liked, complet
 
   const handleFork = () => {
     startTransition(() => forkChallenge(slug));
+  };
+
+  const handleRegister = () => {
+    startTransition(() => registerForChallenge(challengeId));
   };
 
   const handleComplete = () => {
@@ -87,10 +93,15 @@ export function ChallengeActions({ challengeId, slug, likesCount, liked, complet
                 <CheckCircle className="h-4 w-4 fill-green-600 text-white" />
                 {t("completed")}
               </Button>
-            ) : (
+            ) : registered ? (
               <Button className="gap-2" onClick={handleComplete} disabled={isPending}>
                 <CheckCircle className="h-4 w-4" />
                 {t("markComplete")}
+              </Button>
+            ) : (
+              <Button className="gap-2" onClick={handleRegister} disabled={isPending}>
+                <UserPlus className="h-4 w-4" />
+                {t("register")}
               </Button>
             )}
             <Button variant="outline" className="gap-2" asChild>

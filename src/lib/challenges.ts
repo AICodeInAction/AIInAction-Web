@@ -203,6 +203,13 @@ export async function getPublicReflections(challengeId: string) {
   });
 }
 
+export async function hasUserRegistered(userId: string, challengeId: string) {
+  const registration = await prisma.challengeRegistration.findUnique({
+    where: { userId_challengeId: { userId, challengeId } },
+  });
+  return !!registration;
+}
+
 export async function hasUserCompleted(userId: string, challengeId: string) {
   const completion = await prisma.challengeCompletion.findUnique({
     where: { userId_challengeId: { userId, challengeId } },

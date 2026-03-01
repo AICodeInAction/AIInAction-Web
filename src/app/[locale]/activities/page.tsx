@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 /* ── Animation variants ── */
 
@@ -299,6 +300,12 @@ export default function ActivitiesPage() {
                 了解 OpenClaw
                 <ExternalLink className="ml-1 h-4 w-4" />
               </a>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link href="/challenges/openclaw">
+                参与挑战
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
             </Button>
           </motion.div>
 

@@ -79,6 +79,9 @@
     "markComplete": "Mark as Complete",
     "completed": "Completed",
     "shareSolution": "Share Your Solution",
+    "register": "Register",
+    "registered": "Registered",
+    "registerFirst": "Register first to complete",
     "deleteConfirm": "Are you sure you want to delete this challenge? This cannot be undone.",
     "notFound": "Challenge Not Found"
   },

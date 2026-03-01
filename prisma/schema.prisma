@@ -56,6 +56,7 @@ model User {
   authoredChallenges Challenge[]        @relation("AuthoredChallenges")
   challengeLikes     ChallengeLike[]
   challengeComments  ChallengeComment[]
+  registrations      ChallengeRegistration[]
   stats              UserStats?
   achievements       UserAchievement[]
   apiKeys            ApiKey[]
@@ -150,6 +151,7 @@ model Challenge {
   projects      SharedProject[]
   likes         ChallengeLike[]
   comments      ChallengeComment[]
+  registrations ChallengeRegistration[]
   translations  ChallengeTranslation[]
 
   createdAt     DateTime   @default(now()) @map("created_at")
@@ -218,6 +220,17 @@ model ChallengeLike {
 
   @@id([userId, challengeId])
   @@map("challenge_likes")
+}
+
+model ChallengeRegistration {
+  userId      String   @map("user_id")
+  challengeId String   @map("challenge_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@id([userId, challengeId])
+  @@map("challenge_registrations")
 }
 
 model ChallengeComment {

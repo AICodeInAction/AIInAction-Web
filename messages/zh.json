@@ -79,6 +79,9 @@
     "markComplete": "标记为完成",
     "completed": "已完成",
     "shareSolution": "分享你的方案",
+    "register": "报名参与",
+    "registered": "已报名",
+    "registerFirst": "请先报名才能完成挑战",
     "deleteConfirm": "确定要删除这个挑战吗？此操作不可撤销。",
     "notFound": "未找到挑战"
   },
