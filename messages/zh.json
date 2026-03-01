@@ -66,7 +66,15 @@
     "allLevels": "全部难度",
     "showingRange": "显示第 {from}-{to} 条，共 {total} 个挑战",
     "noResults": "未找到挑战",
-    "noResultsHint": "尝试调整筛选条件或搜索关键词。"
+    "noResultsHint": "尝试调整筛选条件或搜索关键词。",
+    "filters": "筛选",
+    "filterType": "类型",
+    "filterCategory": "分类",
+    "filterDifficulty": "难度",
+    "clearFilters": "清除筛选",
+    "sortNewest": "最新",
+    "sortLikes": "最多点赞",
+    "sortRegistrations": "最多报名"
   },
   "challenge": {
     "objectives": "目标",

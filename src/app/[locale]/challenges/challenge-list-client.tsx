@@ -1,14 +1,25 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Search, Plus, Shield, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Search, Plus, Shield, ChevronLeft, ChevronRight,
+  SlidersHorizontal, X, Users,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useSession } from "next-auth/react";
 import { difficultyConfig } from "@/lib/constants";
 import { useTranslations } from "next-intl";
@@ -37,13 +48,15 @@ type SerializedChallenge = {
   category: SerializedCategory | null;
   tags: { tag: { name: string } }[];
   author: { id: string; name: string | null; image: string | null } | null;
+  _count?: { registrations: number };
 };
 
 type Filters = {
-  category: string;
-  difficulty: string;
+  categories: string[];
+  difficulties: string[];
   search: string;
-  tab: string;
+  tab: string[];
+  sort: string;
 };
 
 const stagger = {
@@ -84,32 +97,70 @@ export function ChallengeListClient({
   const td = useTranslations("difficulty");
   const tCat = useTranslations("categories");
 
-  const tabs = [
-    { key: "all", label: t("tabAll") },
-    { key: "official", label: t("tabOfficial") },
-    { key: "community", label: t("tabCommunity") },
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const sortOptions = [
+    { key: "newest", label: t("sortNewest") },
+    { key: "likes", label: t("sortLikes") },
+    { key: "registrations", label: t("sortRegistrations") },
   ];
 
   const difficulties = [
-    { key: "ALL", label: t("allLevels") },
     { key: "BEGINNER", label: td("BEGINNER") },
     { key: "INTERMEDIATE", label: td("INTERMEDIATE") },
     { key: "ADVANCED", label: td("ADVANCED") },
     { key: "EXPERT", label: td("EXPERT") },
   ];
 
-  const updateFilter = useCallback(
-    (key: string, value: string) => {
+  const typeOptions = [
+    { key: "official", label: tc("official") },
+    { key: "community", label: tc("community") },
+  ];
+
+  // Build URL params from current state with a toggle applied
+  const buildParams = useCallback(
+    (key: string, value: string, isMultiToggle: boolean) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value === "ALL" || value === "all" || value === "") {
-        params.delete(key);
+
+      if (isMultiToggle) {
+        const current = params.get(key)?.split(",").filter(Boolean) || [];
+        const idx = current.indexOf(value);
+        if (idx >= 0) {
+          current.splice(idx, 1);
+        } else {
+          current.push(value);
+        }
+        if (current.length === 0) {
+          params.delete(key);
+        } else {
+          params.set(key, current.join(","));
+        }
       } else {
-        params.set(key, value);
+        if (!value) {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
       }
+
       params.delete("page");
-      router.push(`/challenges?${params.toString()}`);
+      return params.toString();
     },
-    [router, searchParams]
+    [searchParams]
+  );
+
+  const toggleFilter = useCallback(
+    (key: string, value: string) => {
+      router.push(`/challenges?${buildParams(key, value, true)}`);
+    },
+    [router, buildParams]
+  );
+
+  const setFilter = useCallback(
+    (key: string, value: string) => {
+      router.push(`/challenges?${buildParams(key, value, false)}`);
+    },
+    [router, buildParams]
   );
 
   const goToPage = useCallback(
@@ -130,13 +181,104 @@ export function ChallengeListClient({
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       const search = formData.get("search") as string;
-      updateFilter("search", search);
+      setFilter("search", search);
     },
-    [updateFilter]
+    [setFilter]
   );
+
+  const activeFilterCount =
+    currentFilters.categories.length +
+    currentFilters.difficulties.length +
+    currentFilters.tab.length;
 
   const from = (currentPage - 1) * PAGE_SIZE + 1;
   const to = Math.min(currentPage * PAGE_SIZE, total);
+
+  const filterSidebar = (
+    <div className="space-y-6">
+      {/* Type filter */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold">{t("filterType")}</h3>
+        <div className="space-y-2">
+          {typeOptions.map((opt) => (
+            <label
+              key={opt.key}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <Checkbox
+                checked={currentFilters.tab.includes(opt.key)}
+                onCheckedChange={() => toggleFilter("tab", opt.key)}
+              />
+              <span>{opt.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Category filter */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold">{t("filterCategory")}</h3>
+        <div className="space-y-2">
+          {categories.map((cat) => (
+            <label
+              key={cat.slug}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <Checkbox
+                checked={currentFilters.categories.includes(cat.slug)}
+                onCheckedChange={() => toggleFilter("categories", cat.slug)}
+              />
+              <span>
+                {tCat.has(`${cat.slug}.name`)
+                  ? tCat(`${cat.slug}.name`)
+                  : cat.name}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Difficulty filter */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold">{t("filterDifficulty")}</h3>
+        <div className="space-y-2">
+          {difficulties.map((d) => (
+            <label
+              key={d.key}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <Checkbox
+                checked={currentFilters.difficulties.includes(d.key)}
+                onCheckedChange={() => toggleFilter("difficulties", d.key)}
+              />
+              <span>{d.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Clear filters */}
+      {activeFilterCount > 0 && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full gap-1.5 text-xs"
+          onClick={() => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete("tab");
+            params.delete("categories");
+            params.delete("difficulties");
+            params.delete("page");
+            router.push(`/challenges?${params.toString()}`);
+            setMobileFiltersOpen(false);
+          }}
+        >
+          <X className="h-3.5 w-3.5" />
+          {t("clearFilters")}
+        </Button>
+      )}
+    </div>
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
@@ -160,149 +302,195 @@ export function ChallengeListClient({
         )}
       </div>
 
-      {/* Tabs */}
-      <div className="mt-8 flex gap-1 border-b">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => updateFilter("tab", tab.key)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              currentFilters.tab === tab.key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Filters */}
-      <div className="mt-6 space-y-4">
-        <form onSubmit={handleSearchSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              name="search"
-              placeholder={t("searchPlaceholder")}
-              defaultValue={currentFilters.search}
-              className="pl-9"
-            />
+      {/* Main layout: sidebar + content */}
+      <div className="mt-8 flex gap-8">
+        {/* Desktop sidebar */}
+        <aside className="hidden w-56 shrink-0 lg:block">
+          <div className="sticky top-24">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              {t("filters")}
+            </h2>
+            {filterSidebar}
           </div>
-        </form>
+        </aside>
 
-        <div className="space-y-3">
-          {/* Category filter */}
-          <div className="flex flex-wrap gap-1.5">
-            <Button
-              variant={currentFilters.category === "ALL" ? "default" : "outline"}
-              size="sm"
-              onClick={() => updateFilter("category", "ALL")}
-              className="text-xs"
-            >
-              {t("allCategories")}
-            </Button>
-            {categories.map((cat) => (
-              <Button
-                key={cat.slug}
-                variant={currentFilters.category === cat.slug ? "default" : "outline"}
-                size="sm"
-                onClick={() => updateFilter("category", cat.slug)}
-                className="text-xs"
-              >
-                {tCat.has(`${cat.slug}.name`) ? tCat(`${cat.slug}.name`) : cat.name}
-              </Button>
-            ))}
+        {/* Main content */}
+        <div className="min-w-0 flex-1">
+          {/* Search + Sort + Mobile filter toggle */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <form onSubmit={handleSearchSubmit} className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                name="search"
+                placeholder={t("searchPlaceholder")}
+                defaultValue={currentFilters.search}
+                className="pl-9"
+              />
+            </form>
+
+            <div className="flex items-center gap-2">
+              {/* Sort buttons */}
+              <div className="flex items-center gap-1 rounded-lg border p-0.5">
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.key}
+                    onClick={() => setFilter("sort", opt.key === "newest" ? "" : opt.key)}
+                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                      currentFilters.sort === opt.key
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile filter toggle */}
+              <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5 lg:hidden">
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {t("filters")}
+                    {activeFilterCount > 0 && (
+                      <Badge variant="secondary" className="ml-1 px-1.5 text-[10px]">
+                        {activeFilterCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-72">
+                  <SheetHeader>
+                    <SheetTitle>{t("filters")}</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6">{filterSidebar}</div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
 
-          {/* Difficulty filter */}
-          <div className="flex flex-wrap gap-1.5">
-            {difficulties.map((d) => (
-              <Button
-                key={d.key}
-                variant={currentFilters.difficulty === d.key ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => updateFilter("difficulty", d.key)}
-                className="text-xs"
-              >
-                {d.label}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Results count */}
-      <div className="mt-6 text-sm text-muted-foreground">
-        {t("showingRange", { from, to, total })}
-      </div>
-
-      {/* Challenge grid */}
-      <motion.div
-        key={`${currentFilters.category}-${currentFilters.difficulty}-${currentFilters.tab}-${currentFilters.search}-${currentPage}`}
-        initial="hidden"
-        animate="visible"
-        variants={stagger}
-        className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {challenges.map((challenge) => (
-          <ChallengeCard key={challenge.slug} challenge={challenge} />
-        ))}
-      </motion.div>
-
-      {challenges.length === 0 && (
-        <div className="mt-16 text-center">
-          <p className="text-lg font-medium">{t("noResults")}</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {t("noResultsHint")}
-          </p>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-10 flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => goToPage(currentPage - 1)}
-            disabled={currentPage <= 1}
-            className="gap-1"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            {tc("prev")}
-          </Button>
-          <div className="flex items-center gap-1">
-            {generatePageNumbers(currentPage, totalPages).map((p, i) =>
-              p === "..." ? (
-                <span key={`dot-${i}`} className="px-2 text-sm text-muted-foreground">
-                  ...
-                </span>
-              ) : (
-                <Button
-                  key={p}
-                  variant={currentPage === p ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => goToPage(p as number)}
-                  className="min-w-9"
+          {/* Active filter chips */}
+          {activeFilterCount > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {currentFilters.tab.map((tab) => (
+                <Badge
+                  key={tab}
+                  variant="secondary"
+                  className="cursor-pointer gap-1 text-xs"
+                  onClick={() => toggleFilter("tab", tab)}
                 >
-                  {p}
-                </Button>
-              )
-            )}
+                  {tab === "official" ? tc("official") : tc("community")}
+                  <X className="h-3 w-3" />
+                </Badge>
+              ))}
+              {currentFilters.categories.map((cat) => {
+                const catObj = categories.find((c) => c.slug === cat);
+                const label = catObj
+                  ? tCat.has(`${catObj.slug}.name`)
+                    ? tCat(`${catObj.slug}.name`)
+                    : catObj.name
+                  : cat;
+                return (
+                  <Badge
+                    key={cat}
+                    variant="secondary"
+                    className="cursor-pointer gap-1 text-xs"
+                    onClick={() => toggleFilter("categories", cat)}
+                  >
+                    {label}
+                    <X className="h-3 w-3" />
+                  </Badge>
+                );
+              })}
+              {currentFilters.difficulties.map((d) => (
+                <Badge
+                  key={d}
+                  variant="secondary"
+                  className="cursor-pointer gap-1 text-xs"
+                  onClick={() => toggleFilter("difficulties", d)}
+                >
+                  {td.has(d) ? td(d) : d}
+                  <X className="h-3 w-3" />
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          {/* Results count */}
+          <div className="mt-4 text-sm text-muted-foreground">
+            {total > 0
+              ? t("showingRange", { from, to, total })
+              : null}
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={currentPage >= totalPages}
-            className="gap-1"
+
+          {/* Challenge grid */}
+          <motion.div
+            key={`${currentFilters.categories.join(",")}-${currentFilters.difficulties.join(",")}-${currentFilters.tab.join(",")}-${currentFilters.search}-${currentFilters.sort}-${currentPage}`}
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
           >
-            {tc("next")}
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+            {challenges.map((challenge) => (
+              <ChallengeCard key={challenge.slug} challenge={challenge} />
+            ))}
+          </motion.div>
+
+          {challenges.length === 0 && (
+            <div className="mt-16 text-center">
+              <p className="text-lg font-medium">{t("noResults")}</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {t("noResultsHint")}
+              </p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage <= 1}
+                className="gap-1"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                {tc("prev")}
+              </Button>
+              <div className="flex items-center gap-1">
+                {generatePageNumbers(currentPage, totalPages).map((p, i) =>
+                  p === "..." ? (
+                    <span key={`dot-${i}`} className="px-2 text-sm text-muted-foreground">
+                      ...
+                    </span>
+                  ) : (
+                    <Button
+                      key={p}
+                      variant={currentPage === p ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => goToPage(p as number)}
+                      className="min-w-9"
+                    >
+                      {p}
+                    </Button>
+                  )
+                )}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage >= totalPages}
+                className="gap-1"
+              >
+                {tc("next")}
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -330,6 +518,7 @@ function ChallengeCard({ challenge }: { challenge: SerializedChallenge }) {
   const catName = challenge.category && tCat.has(`${challenge.category.slug}.name`)
     ? tCat(`${challenge.category.slug}.name`) : challenge.category?.name;
   const diffLabel = td.has(challenge.difficulty) ? td(challenge.difficulty) : diff.label;
+  const regCount = challenge._count?.registrations || 0;
 
   return (
     <motion.div variants={fadeUp}>
@@ -383,6 +572,12 @@ function ChallengeCard({ challenge }: { challenge: SerializedChallenge }) {
             {challenge.likesCount > 0 && (
               <span className="text-xs text-muted-foreground">
                 {tc("likes", { count: challenge.likesCount })}
+              </span>
+            )}
+            {regCount > 0 && (
+              <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
+                <Users className="h-3 w-3" />
+                {regCount}
               </span>
             )}
           </div>

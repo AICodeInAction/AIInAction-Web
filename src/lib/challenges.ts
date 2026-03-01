@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { unstable_cache } from "next/cache";
 import type { Difficulty, Prisma, ChallengeTranslation } from "@prisma/client";
 
 function applyTranslation<T extends { translations?: ChallengeTranslation[] }>(
@@ -26,25 +27,41 @@ function applyTranslations<T extends { translations?: ChallengeTranslation[] }>(
 
 export type ChallengeFilters = {
   categorySlug?: string;
+  categorySlugs?: string[];
   difficulty?: Difficulty;
+  difficulties?: Difficulty[];
   tag?: string;
   search?: string;
   official?: boolean;
   page?: number;
   pageSize?: number;
+  sortBy?: "newest" | "likes" | "registrations";
 };
 
 export async function getChallenges(filters: ChallengeFilters = {}, locale?: string) {
-  const { categorySlug, difficulty, tag, search, official, page = 1, pageSize = 30 } = filters;
+  const {
+    categorySlug, categorySlugs, difficulty, difficulties,
+    tag, search, official, page = 1, pageSize = 30, sortBy = "newest",
+  } = filters;
 
   const where: Prisma.ChallengeWhereInput = {};
 
-  if (categorySlug) {
-    where.category = { slug: categorySlug };
+  // Support both single and multi-select category filters
+  const slugs = categorySlugs?.length ? categorySlugs : categorySlug ? [categorySlug] : [];
+  if (slugs.length === 1) {
+    where.category = { slug: slugs[0] };
+  } else if (slugs.length > 1) {
+    where.category = { slug: { in: slugs } };
   }
-  if (difficulty) {
-    where.difficulty = difficulty;
+
+  // Support both single and multi-select difficulty filters
+  const diffs = difficulties?.length ? difficulties : difficulty ? [difficulty] : [];
+  if (diffs.length === 1) {
+    where.difficulty = diffs[0];
+  } else if (diffs.length > 1) {
+    where.difficulty = { in: diffs };
   }
+
   if (official !== undefined) {
     where.isOfficial = official;
   }
@@ -58,6 +75,21 @@ export async function getChallenges(filters: ChallengeFilters = {}, locale?: str
     ];
   }
 
+  // Build orderBy based on sortBy option
+  let orderBy: Prisma.ChallengeOrderByWithRelationInput[];
+  switch (sortBy) {
+    case "likes":
+      orderBy = [{ likesCount: "desc" }, { createdAt: "desc" }];
+      break;
+    case "registrations":
+      orderBy = [{ registrations: { _count: "desc" } }, { createdAt: "desc" }];
+      break;
+    case "newest":
+    default:
+      orderBy = [{ createdAt: "desc" }];
+      break;
+  }
+
   const [challenges, total] = await Promise.all([
     prisma.challenge.findMany({
       where,
@@ -66,8 +98,9 @@ export async function getChallenges(filters: ChallengeFilters = {}, locale?: str
         tags: { include: { tag: true } },
         author: { select: { id: true, name: true, image: true } },
         translations: true,
+        _count: { select: { registrations: true } },
       },
-      orderBy: [{ isOfficial: "desc" }, { likesCount: "desc" }, { createdAt: "desc" }],
+      orderBy,
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
@@ -168,14 +201,47 @@ export async function hasUserLiked(userId: string, challengeId: string) {
   return !!like;
 }
 
-export async function getStats() {
-  const [challengeCount, categoryCount, userCount, projectCount] = await Promise.all([
-    prisma.challenge.count(),
-    prisma.category.count({ where: { isOfficial: true } }),
-    prisma.user.count(),
-    prisma.sharedProject.count(),
+export const getStats = unstable_cache(
+  async () => {
+    const [challengeCount, categoryCount, userCount, projectCount] = await Promise.all([
+      prisma.challenge.count(),
+      prisma.category.count({ where: { isOfficial: true } }),
+      prisma.user.count(),
+      prisma.sharedProject.count(),
+    ]);
+    return { challengeCount, categoryCount, userCount, projectCount };
+  },
+  ["stats"],
+  { revalidate: 3600 }
+);
+
+export async function getProjects(filters: { search?: string; page?: number; pageSize?: number } = {}) {
+  const { search, page = 1, pageSize = 30 } = filters;
+
+  const where: Prisma.SharedProjectWhereInput = {};
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { description: { contains: search, mode: "insensitive" } },
+      { tags: { hasSome: [search.toLowerCase()] } },
+    ];
+  }
+
+  const [projects, total] = await Promise.all([
+    prisma.sharedProject.findMany({
+      where,
+      include: {
+        user: { select: { id: true, name: true, image: true } },
+        challenge: { select: { id: true, slug: true, title: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.sharedProject.count({ where }),
   ]);
-  return { challengeCount, categoryCount, userCount, projectCount };
+
+  return { projects, total, page, pageSize };
 }
 
 export async function getPublicReflections(challengeId: string) {

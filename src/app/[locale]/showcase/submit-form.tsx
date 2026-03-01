@@ -5,18 +5,25 @@ import { Github } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { createProject } from "@/actions/projects";
+import { useRouter } from "next/navigation";
 
 export function SubmitProjectForm({ onSuccess }: { onSuccess: () => void }) {
   const [loading, setLoading] = useState(false);
   const t = useTranslations("showcase");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // In production, this would call a server action to save to DB
-    await new Promise((r) => setTimeout(r, 1000));
-    setLoading(false);
-    onSuccess();
+    try {
+      const formData = new FormData(e.currentTarget);
+      await createProject(formData);
+      router.refresh();
+      onSuccess();
+    } catch {
+      setLoading(false);
+    }
   };
 
   return (

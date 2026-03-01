@@ -8,10 +8,11 @@ import { getTranslations } from "next-intl/server";
 type Props = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{
-    category?: string;
-    difficulty?: string;
+    categories?: string;
+    difficulties?: string;
     search?: string;
     tab?: string;
+    sort?: string;
     page?: string;
   }>;
 };
@@ -32,14 +33,26 @@ export default async function ChallengesPage({ params, searchParams }: Props) {
   const sp = await searchParams;
   const categories = await getCategories();
 
-  const official =
-    sp.tab === "official" ? true : sp.tab === "community" ? false : undefined;
+  // Parse multi-select filters from comma-separated params
+  const categorySlugs = sp.categories?.split(",").filter(Boolean) || [];
+  const difficulties = sp.difficulties?.split(",").filter(Boolean) as Difficulty[] || [];
+
+  // Parse type filter (official/community) - supports multi-select
+  const tabValues = sp.tab?.split(",").filter(Boolean) || [];
+  let official: boolean | undefined;
+  if (tabValues.length === 1) {
+    official = tabValues[0] === "official" ? true : tabValues[0] === "community" ? false : undefined;
+  }
+  // If both or neither are selected, show all
+
+  const sortBy = (sp.sort as "newest" | "likes" | "registrations") || "newest";
 
   const { challenges, total } = await getChallenges({
-    categorySlug: sp.category,
-    difficulty: sp.difficulty as Difficulty | undefined,
+    categorySlugs,
+    difficulties,
     search: sp.search,
     official,
+    sortBy,
     page: sp.page ? parseInt(sp.page) : 1,
   }, locale);
 
@@ -49,10 +62,11 @@ export default async function ChallengesPage({ params, searchParams }: Props) {
       categories={JSON.parse(JSON.stringify(categories))}
       total={total}
       currentFilters={{
-        category: sp.category || "ALL",
-        difficulty: sp.difficulty || "ALL",
+        categories: categorySlugs,
+        difficulties: sp.difficulties?.split(",").filter(Boolean) || [],
         search: sp.search || "",
-        tab: sp.tab || "all",
+        tab: tabValues,
+        sort: sortBy,
       }}
       currentPage={sp.page ? parseInt(sp.page) : 1}
     />
