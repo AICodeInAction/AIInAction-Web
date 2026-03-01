@@ -30,6 +30,7 @@ export function Header() {
 
   const navLinks = [
     { href: "/challenges" as const, label: t("challenges") },
+    { href: "/activities" as const, label: t("activities") },
     { href: "/paths" as const, label: t("paths") },
     { href: "/showcase" as const, label: t("showcase") },
     { href: "/leaderboard" as const, label: t("leaderboard") },
