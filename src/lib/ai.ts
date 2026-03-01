@@ -4,6 +4,7 @@ import { HttpsProxyAgent } from "https-proxy-agent";
 const proxyUrl = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
 
 const client = new Anthropic({
+  // @ts-expect-error httpAgent is supported at runtime but not in SDK types
   httpAgent: proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined,
 });
 

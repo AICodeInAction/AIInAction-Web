@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全职妈妈的AI超能力：OpenClaw如何重塑家庭与事业的平衡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#D946A8;--gold-light:#F0ABFE;--gold-dark:#A21CAF;--ink:#1A1A1A;--ink-light:#3D3D3D;--ink-muted:#6B6B6B;--cream:#FDF4FF;--cream-warm:#FAE8FF;--white:#FFFFFF;--accent-red:#C43D3D;--accent-green:#2D8B5F;--code-bg:#2B2B2B;--border:#F5D0FE;--shadow:rgba(217,70,168,0.08)}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--cream);color:var(--ink);line-height:1.8;font-size:16px;-webkit-font-smoothing:antialiased}
+    .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(175deg,#1A0D1A 0%,#2D152D 40%,#3D1A3D 100%);overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(217,70,168,0.15) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 20%,rgba(217,70,168,0.08) 0%,transparent 50%);pointer-events:none}
+    .hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D946A8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5;pointer-events:none}
+    .hero-content{position:relative;z-index:2;text-align:center;padding:2rem;max-width:900px;animation:fadeUp 1.2s ease-out}@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border:1px solid rgba(217,70,168,0.3);border-radius:100px;color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:3rem;backdrop-filter:blur(10px);background:rgba(217,70,168,0.05)}.hero-badge::before{content:'🦞';font-size:16px}
+    .hero h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.3;color:var(--white);margin-bottom:1.5rem}.hero h1 .gold{color:var(--gold)}
+    .hero-subtitle{font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,0.6);font-weight:300;max-width:650px;margin:0 auto 3rem;line-height:1.9}
+    .hero-stats{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap}.hero-stat{text-align:center}.hero-stat-number{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gold);display:block;line-height:1.1}.hero-stat-label{font-size:13px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-top:6px}
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.25);font-size:12px;letter-spacing:3px;animation:pulse 2s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:.25}50%{opacity:.6}}
+    .article-container{max-width:820px;margin:0 auto;padding:0 2rem}
+    .quote-banner{background:var(--white);border-left:4px solid var(--gold);padding:3rem 3.5rem;margin:4rem auto;max-width:820px;position:relative}.quote-banner::before{content:'"';font-family:'Playfair Display',serif;font-size:6rem;color:var(--gold-light);position:absolute;top:.5rem;left:1.2rem;line-height:1}.quote-text{font-family:'Noto Serif SC',serif;font-size:1.2rem;font-weight:600;line-height:2;color:var(--ink);position:relative;z-index:1}.quote-author{margin-top:1.2rem;font-size:.9rem;color:var(--ink-muted)}
+    .content-section{margin:4rem 0}.section-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dark);font-weight:700;margin-bottom:1rem}.section-label::before{content:'';width:24px;height:1px;background:var(--gold)}
+    h2{font-family:'Noto Serif SC',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;line-height:1.4;margin-bottom:1.5rem}h3{font-family:'Noto Serif SC',serif;font-size:1.3rem;font-weight:600;margin:2.5rem 0 1rem}p{margin-bottom:1.2rem;color:var(--ink-light)}strong{color:var(--ink);font-weight:700}
+    .profile-card{display:flex;gap:2rem;align-items:flex-start;background:var(--white);padding:2.5rem;border:1px solid var(--border);margin:3rem 0}.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}.profile-info h4{font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}.profile-role{color:var(--gold-dark);font-size:.85rem;font-weight:500;margin-bottom:.8rem}.profile-tags{display:flex;gap:8px;flex-wrap:wrap}.profile-tag{padding:4px 12px;background:var(--cream);border:1px solid var(--border);font-size:12px;color:var(--ink-muted);border-radius:4px}
+    .pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin:2rem 0}.pain-card{background:var(--white);border:1px solid var(--border);padding:1.5rem;position:relative;overflow:hidden}.pain-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-red);opacity:.6}.pain-icon{font-size:1.5rem;margin-bottom:.8rem}.pain-card h4{font-size:.95rem;font-weight:700;margin-bottom:.5rem}.pain-card p{font-size:.85rem;color:var(--ink-muted);margin-bottom:0;line-height:1.7}
+    .agent-card{background:var(--white);border:1px solid var(--border);margin-bottom:2.5rem;overflow:hidden}.agent-header{display:flex;align-items:center;gap:1rem;padding:1.8rem 2rem;border-bottom:1px solid var(--border);background:linear-gradient(to right,var(--cream),var(--white))}.agent-number{width:44px;height:44px;background:var(--ink);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;flex-shrink:0}.agent-title-block h3{margin:0;font-size:1.15rem}.agent-subtitle{font-size:.82rem;color:var(--ink-muted);margin-top:2px}.agent-body{padding:2rem}.agent-soul{background:var(--cream);border-left:3px solid var(--gold);padding:1.2rem 1.5rem;margin:1.2rem 0;font-size:.9rem;color:var(--ink-light);line-height:1.8}.agent-soul-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);font-weight:700;margin-bottom:.5rem}
+    .skill-list{margin:1rem 0}.skill-item{display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 0;border-bottom:1px solid var(--border)}.skill-item:last-child{border-bottom:none}.skill-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;margin-top:10px;flex-shrink:0}.skill-item p{margin:0;font-size:.9rem}
+    .results-banner{background:linear-gradient(135deg,#1A0D1A,#2D152D);padding:4rem 2rem;margin:4rem -2rem;text-align:center}.results-title{font-family:'Noto Serif SC',serif;font-size:1.5rem;color:var(--white);margin-bottom:2.5rem}.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;max-width:800px;margin:0 auto}.result-item{text-align:center}.result-number{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--gold);line-height:1.1}.result-unit{font-size:1rem;color:var(--gold-light)}.result-desc{font-size:.85rem;color:rgba(255,255,255,0.5);margin-top:.5rem}
+    .timeline{position:relative;margin:2.5rem 0;padding-left:2rem}.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--border))}.timeline-item{position:relative;padding:0 0 2.5rem 1.5rem}.timeline-item::before{content:'';position:absolute;left:-2rem;top:6px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid var(--cream);margin-left:-4px}.timeline-phase{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);font-weight:700}.timeline-title{font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:600;margin:.3rem 0 .5rem}.timeline-desc{font-size:.9rem;color:var(--ink-muted);margin:0;line-height:1.7}
+    .cta-section{background:var(--white);border:2px solid var(--gold);padding:3rem;text-align:center;margin:4rem 0;position:relative}.cta-section::before{content:'🦞';font-size:2.5rem;position:absolute;top:-1.5rem;left:50%;transform:translateX(-50%);background:var(--cream);padding:0 1rem}.cta-section h2{margin-top:.5rem}.cta-steps{display:flex;justify-content:center;gap:2rem;margin:2rem 0;flex-wrap:wrap}.cta-step{text-align:center;max-width:200px}.cta-step-num{width:36px;height:36px;background:var(--ink);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;margin:0 auto .8rem}.cta-step p{font-size:.85rem;color:var(--ink-muted);margin:0}.cta-code{display:inline-block;background:var(--code-bg);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:14px;padding:12px 24px;margin-top:1rem}
+    .article-footer{text-align:center;padding:3rem 2rem 4rem;border-top:1px solid var(--border);margin-top:4rem}.footer-line{width:40px;height:2px;background:var(--gold);margin:0 auto 1.5rem}.article-footer p{font-size:.85rem;color:var(--ink-muted)}.share-prompt{margin-top:1.5rem;padding:1rem 1.5rem;background:var(--cream-warm);display:inline-block;font-size:.9rem;color:var(--ink-light)}
+    .section-divider{text-align:center;margin:3rem 0;color:var(--gold-light);font-size:1.2rem;letter-spacing:12px}
+    @media(max-width:768px){.hero-stats{gap:2rem}.profile-card{flex-direction:column;align-items:center;text-align:center}.profile-tags{justify-content:center}.quote-banner{padding:2rem 2rem 2rem 2.5rem}.agent-body{padding:1.5rem}.results-banner{margin:3rem -2rem;padding:3rem 1.5rem}.cta-steps{flex-direction:column;align-items:center}}
+    code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--cream-warm);padding:2px 6px;border:1px solid var(--border);color:var(--ink)}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">OpenClaw 实践案例</div>
+      <h1>全职妈妈的AI超能力<br><span class="gold">「小龙虾」</span>如何重塑<br>家庭与事业的平衡</h1>
+      <p class="hero-subtitle">Jesse Genet 的多 Agent 自动化实践，<br>让不可能成为日常，<br>一天当三天用。</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-number">5</span><div class="hero-stat-label">个 AI Agent 协作</div></div>
+        <div class="hero-stat"><span class="hero-stat-number">90%</span><div class="hero-stat-label">打印流程提速</div></div>
+        <div class="hero-stat"><span class="hero-stat-number">75%</span><div class="hero-stat-label">课程规划时间节省</div></div>
+      </div>
+    </div>
+    <div class="scroll-hint">向下滚动 ↓</div>
+  </section>
+
+  <div class="article-container">
+    <div class="quote-banner">
+      <p class="quote-text">OpenClaw 彻底改变了我对2026年智能个人AI助理的看法。它不是一个工具，它是一个团队。</p>
+      <p class="quote-author">—— Jesse Genet · 全职妈妈兼创业者 · OpenClaw 用户</p>
+    </div>
+
+    <section class="content-section">
+      <div class="section-label">关于主人公</div>
+      <h2>一个人撑起家庭教育和创业的双重使命</h2>
+      <div class="profile-card">
+        <div class="profile-avatar">👩‍👧‍👦</div>
+        <div class="profile-info"><h4>Jesse Genet</h4><p class="profile-role">全职妈妈 · 创业者 · 教育科技探索者</p>
+          <div class="profile-tags"><span class="profile-tag">家庭教育</span><span class="profile-tag">创业管理</span><span class="profile-tag">教育科技</span><span class="profile-tag">软件开发</span></div>
+        </div>
+      </div>
+      <p>Jesse 不仅是一位全职妈妈，在家亲自教育年幼的孩子，更是一位创业者，在家庭管理、教育科技和软件开发等多个领域同时推进事业。</p>
+      <p>核心矛盾：<strong>业务复杂度是团队级别的，但人手只有她自己。</strong></p>
+      <div class="pain-grid">
+        <div class="pain-card"><div class="pain-icon">⏰</div><h4>时间精力分配不均</h4><p>在家教育孩子需要投入巨大精力，而创业业务又要求保持高度专注。</p></div>
+        <div class="pain-card"><div class="pain-icon">📜</div><h4>重复性任务耗时</h4><p>打印教材、整理文件、规划课程体系，这些看似简单的任务吸走了宝贵的思考时间。</p></div>
+        <div class="pain-card"><div class="pain-icon">💻</div><h4>缺乏编程经验</h4><p>渴望为孩子们定制互动应用，但受限于编程知识，很多想法只能停留在概念阶段。</p></div>
+        <div class="pain-card"><div class="pain-icon">🌐</div><h4>数字与物理世界割裂</h4><p>任务需要将数字信息转化为物理行动（如打印），或将物理世界信息数字化。</p></div>
+      </div>
+    </section>
+
+    <div class="section-divider">◆ ◆ ◆</div>
+
+    <section class="content-section">
+      <div class="section-label">为什么选择小龙虾</div>
+      <h2>OpenClaw：妈妈的 AI 超级团队</h2>
+      <p><strong>多 Agent 隔离，专注高效</strong>：每个 Agent 有自己的角色、记忆和技能集，专注于特定领域，不会出现上下文混乱。</p>
+      <p><strong>原生多平台，连接数字与物理</strong>：Agent 能通过命令行、浏览器控制，甚至直接控制物理设备（如打印机）。</p>
+      <p><strong>Heartbeat 心跳机制</strong>：Agent 不再是被动工具，而是具备「心跳」、持久性记忆和主动执行任务的能力。</p>
+    </section>
+
+    <div class="section-divider">◆ ◆ ◆</div>
+
+    <section class="content-section">
+      <div class="section-label">实施方案</div>
+      <h2>五大 Agent 协作体系</h2>
+
+      <div class="agent-card">
+        <div class="agent-header"><div class="agent-number">01</div><div class="agent-title-block"><h3>家庭教育 Agent</h3><div class="agent-subtitle">教材 OCR → Obsidian → 课程计划生成</div></div></div>
+        <div class="agent-body">
+          <div class="agent-soul"><div class="agent-soul-label">Agent 灵魂设定</div>你是教育课程规划专家。将教材内容转化为可教学的课程计划。工作流：拍照教材 → OCR 识别 → 导入 Obsidian → 生成结构化课程计划 → 推送。</div>
+          <div class="skill-list">
+            <div class="skill-item"><div class="skill-dot"></div><p><strong>OCR 识别</strong> — 将教材图片转为数字文本</p></div>
+            <div class="skill-item"><div class="skill-dot"></div><p><strong>Obsidian 集成</strong> — 知识库存储和管理</p></div>
+            <div class="skill-item"><div class="skill-dot"></div><p><strong>课程生成</strong> — 自动生成教学计划和活动</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header"><div class="agent-number">02</div><div class="agent-title-block"><h3>财务 Agent</h3><div class="agent-subtitle">账户监控 → 预算管理 → 月度报告</div></div></div>
+        <div class="agent-body">
+          <div class="agent-soul"><div class="agent-soul-label">Agent 灵魂设定</div>你是个人和业务财务管理助手。监控账户、识别账单、更新预算、生成月度财务报告。</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header"><div class="agent-number">03</div><div class="agent-title-block"><h3>日程安排 Agent</h3><div class="agent-subtitle">家庭 + 业务日程智能协调</div></div></div>
+        <div class="agent-body">
+          <div class="agent-soul"><div class="agent-soul-label">Agent 灵魂设定</div>你是日程协调专家。接收指令、检查日历、寻找空闲时间、发送邀请、智能提醒，协调家庭和业务日程。</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header"><div class="agent-number">04</div><div class="agent-title-block"><h3>开发 Agent</h3><div class="agent-subtitle">零代码经验 → 4天内部署应用</div></div></div>
+        <div class="agent-body">
+          <div class="agent-soul"><div class="agent-soul-label">Agent 灵魂设定</div>你是全栈开发助手。在没有编程经验的情况下，自主编写代码并部署应用。案例：4天内从零构建并部署儿童电视应用。</div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-header"><div class="agent-number">05</div><div class="agent-title-block"><h3>运营 Agent</h3><div class="agent-subtitle">文件自动化 → 打印机控制</div></div></div>
+        <div class="agent-body">
+          <div class="agent-soul"><div class="agent-soul-label">Agent 灵魂设定</div>你是日常运营管理者。监控文件夹进行自动分类和存储，接收打印指令控制打印机完成实体文件输出。连接数字世界与物理世界。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="results-banner">
+      <div class="results-title">成果：数字说话</div>
+      <div class="results-grid">
+        <div class="result-item"><div class="result-number">90<span class="result-unit">%</span></div><div class="result-desc">打印流程时间提速</div></div>
+        <div class="result-item"><div class="result-number">75<span class="result-unit">%</span></div><div class="result-desc">课程规划时间节省</div></div>
+        <div class="result-item"><div class="result-number">4<span class="result-unit">天</span></div><div class="result-desc">从零部署一个应用</div></div>
+        <div class="result-item"><div class="result-number">24/7</div><div class="result-desc">文件实时自动化整理</div></div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <div class="section-label">可复用方案</div><h2>实操建议</h2>
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-phase">建议一</div><div class="timeline-title">明确痛点与场景</div><div class="timeline-desc">清晰定义你想解决的痛点和具体应用场景。</div></div>
+        <div class="timeline-item"><div class="timeline-phase">建议二</div><div class="timeline-title">「专 Agent 专用」原则</div><div class="timeline-desc">为每个独立功能领域创建一个专门的 Agent。</div></div>
+        <div class="timeline-item"><div class="timeline-phase">建议三</div><div class="timeline-title">深度整合知识库</div><div class="timeline-desc">将 Agent 与 Obsidian 等个人知识管理工具深度结合。</div></div>
+        <div class="timeline-item"><div class="timeline-phase">建议四</div><div class="timeline-title">拥抱物理世界交互</div><div class="timeline-desc">利用 OpenClaw 的设备控制能力，将数字智能延伸到现实生活。</div></div>
+        <div class="timeline-item"><div class="timeline-phase">建议五</div><div class="timeline-title">从小处着手，逐步扩展</div><div class="timeline-desc">从一个最耗时、最重复的小任务开始自动化。</div></div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="section-label">延伸思考</div><h2>AI 时代的超能力者</h2>
+      <p>Jesse 的案例是「超级个体」如何突破自身极限的深刻启示。曾经需要一个团队才能完成的任务，如今一个拥有智能 Agent 辅助的个体便能胜任。</p>
+      <p>未来的智能个人 AI 助理，将不再是信息检索工具，而是能够主动思考、自主行动的「数字分身」。OpenClaw 正在引领我们走向「人机协作」的黄金时代。</p>
+    </section>
+
+    <div class="cta-section">
+      <h2>成为你自己的 AI 超能力者</h2>
+      <div class="cta-steps">
+        <div class="cta-step"><div class="cta-step-num">1</div><p>安装 OpenClaw</p></div>
+        <div class="cta-step"><div class="cta-step-num">2</div><p>配置你的 Agent 团队</p></div>
+        <div class="cta-step"><div class="cta-step-num">3</div><p>一天当三天用</p></div>
+      </div>
+      <div class="cta-code">npx openclaw init</div>
+    </div>
+
+    <footer class="article-footer">
+      <div class="footer-line"></div>
+      <p>OpenClaw 实践案例 · 全职妈妈超能力篇</p><p>整理日期：2026-03-01</p>
+      <div class="share-prompt">觉得这个案例有启发？分享给同样在平衡家庭与事业的朋友 →</div>
+    </footer>
+  </div>
+</body>
+</html>
